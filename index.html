@@ -43,7 +43,7 @@
         #progress-bar {
             height: 100%;
             background: white;
-            width: 0%; /* Startet bei 0 */
+            width: 0%; 
             transition: width 0.1s ease-out;
         }
 
@@ -56,6 +56,7 @@
             pointer-events: none;
             z-index: 9999;
             border-radius: 50%;
+            transform: translate(-50%, -50%);
         }
 
         #cursor-outline {
@@ -66,7 +67,8 @@
             pointer-events: none;
             z-index: 9998;
             border-radius: 50%;
-            transition: transform 0.15s ease-out;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease-out, background 0.3s ease;
         }
 
         /* NAVIGATION */
@@ -171,7 +173,7 @@
             opacity: 0.6;
         }
 
-        /* FORMULAR (Basierend auf Screenshot) */
+        /* FORMULAR */
         .form-container {
             background: var(--input-bg);
             padding: 2.5rem;
@@ -351,9 +353,11 @@
             const posX = e.clientX;
             const posY = e.clientY;
 
+            // Dot folgt direkt
             dot.style.left = `${posX}px`;
             dot.style.top = `${posY}px`;
 
+            // Outline folgt verzögert (animiert)
             outline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
@@ -364,14 +368,16 @@
         const interactables = document.querySelectorAll('a, button, input, select, textarea, .system-card, .checkbox-item');
         interactables.forEach(el => {
             el.addEventListener('mouseenter', () => {
-                outline.style.transform = 'scale(2)';
+                outline.style.transform = 'translate(-50%, -50%) scale(2)';
                 outline.style.background = 'rgba(255,255,255,0.1)';
             });
             el.addEventListener('mouseleave', () => {
-                outline.style.transform = 'scale(1)';
+                outline.style.transform = 'translate(-50%, -50%) scale(1)';
                 outline.style.background = 'transparent';
             });
         });
     </script>
+
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
