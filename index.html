@@ -4,74 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&T Transporte | Home</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --bg: #050505; --blue: #0084ff; --card: #111; }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; }
-        nav { padding: 1.5rem; display: flex; justify-content: center; gap: 25px; border-bottom: 1px solid #222; }
-        nav a { color: #888; text-decoration: none; font-family: 'Syncopate'; font-size: 0.7rem; transition: 0.3s; }
-        nav a:hover { color: var(--blue); }
-        .hero { text-align: center; padding: 6rem 1rem; }
-        .hero h1 { font-family: 'Syncopate'; font-size: 3rem; letter-spacing: 10px; margin: 0; }
-        .event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1100px; margin: 2rem auto; padding: 0 20px; }
-        .event-card { background: var(--card); border: 1px solid #222; padding: 25px; border-radius: 4px; border-left: 4px solid var(--blue); transition: 0.3s; }
-        .event-card:hover { transform: translateY(-5px); border-color: var(--blue); }
-        .event-card h3 { margin: 0 0 10px 0; font-family: 'Syncopate'; font-size: 0.8rem; color: var(--blue); }
-        .tmp-link { color: #fff; text-decoration: none; font-size: 0.7rem; font-family: 'Syncopate'; border: 1px solid #333; padding: 8px 12px; display: inline-block; margin-top: 15px; transition: 0.3s; }
-        .tmp-link:hover { background: var(--blue); border-color: var(--blue); }
+        /* Grunddesign & Hintergrund */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            font-weight: 200;
+            margin-bottom: 60px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Glass-Optik Grid */
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* Glassmorphism Card Style */
+        .event-card {
+            background: rgba(255, 255, 255, 0.03); /* Transparenz */
+            backdrop-filter: blur(15px); /* Weichzeichner Hintergrund */
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Helle Kante */
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            
+            /* Scroll-Animaion Vorbereitung */
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Wenn die Karte ins Sichtfeld kommt */
+        .event-card.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #0084ff;
+        }
+
+        .event-card h3 {
+            color: #0084ff;
+            margin-top: 0;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .event-info {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 15px 0;
+        }
+
+        .btn-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-link:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        #noEventsMsg {
+            text-align: center;
+            grid-column: 1 / -1;
+            color: rgba(255, 255, 255, 0.3);
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
-    <nav>
-        <a href="index.html">HOME</a>
-        <a href="event.html">EVENTS</a>
-    </nav>
 
-    <div class="hero">
-        <h1>D&T TRANSPORTE</h1>
-        <p style="color: #555; letter-spacing: 5px; font-family: 'Syncopate'; font-size: 0.7rem; margin-top: 15px;">AKTUELLE TOUREN</p>
-    </div>
+<div class="container">
+    <h1>Kommende Events</h1>
+    
+    <div id="eventDisplay" class="event-grid">
+        </div>
+</div>
 
-    <div id="indexEventList" class="event-grid">
-        <p style="text-align: center; width: 100%; color: #444;">Suche nach bestätigten Events...</p>
-    </div>
+<script>
+    const supabaseUrl = 'https://dihdeuphymaxgxthnjxq.supabase.co';
+    const supabaseKey = 'sb_publishable_DOAE2-PtSAC0J2iqFOvfyg_AihL7t74';
+    const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    <script>
-        const URL = 'https://dihdeuphymaxgxthnjxq.supabase.co';
-        const KEY = 'sb_publishable_DOAE2-PtSAC0J2iqFOvfyg_AihL7t74';
-        const _supabase = supabase.createClient(URL, KEY);
+    // 1. Daten laden
+    async function loadIndexEvents() {
+        // NUR bestätigte Events laden!
+        const { data, error } = await _supabase
+            .from('dt-event-portal')
+            .select('*')
+            .eq('confirmed', true) 
+            .order('id', { ascending: false });
 
-        async function loadIndexEvents() {
-            // Wir laden nur Events, bei denen confirmed = true ist
-            const { data, error } = await _supabase
-                .from('dt-event-portal')
-                .select('*')
-                .eq('confirmed', true)
-                .order('id', { ascending: false });
-
-            const container = document.getElementById('indexEventList');
-            if (error) {
-                console.error(error);
-                container.innerHTML = `<p style="color:red; text-align:center; width:100%;">Fehler beim Laden.</p>`;
-                return;
-            }
-
-            if (data && data.length > 0) {
-                container.innerHTML = '';
-                data.forEach(ev => {
-                    container.innerHTML += `
-                        <div class="event-card">
-                            <h3>${ev.vtc_name}</h3>
-                            <p style="font-size:0.85rem; color:#888; margin: 5px 0;">📅 ${ev.event_date}</p>
-                            <a href="${ev.tmp_link}" target="_blank" class="tmp-link">TRUCKERSMP LINK</a>
-                        </div>`;
-                });
-            } else {
-                container.innerHTML = '<p style="text-align:center; width:100%; color:#444;">Momentan sind keine Touren geplant.</p>';
-            }
+        if (error) {
+            console.error("Fehler:", error.message);
+            return;
         }
-        loadIndexEvents();
-    </script>
+
+        const container = document.getElementById('eventDisplay');
+        container.innerHTML = '';
+
+        if (!data || data.length === 0) {
+            container.innerHTML = '<p id="noEventsMsg">Aktuell sind keine Touren geplant. Schau später wieder vorbei!</p>';
+            return;
+        }
+
+        data.forEach(ev => {
+            const card = document.createElement('div');
+            card.className = 'event-card';
+            card.innerHTML = `
+                <h3>${ev.vtc_name}</h3>
+                <div class="event-info">📅 ${ev.event_date}</div>
+                <div style="font-size: 13px; margin-bottom: 20px; min-height: 40px;">
+                    ${ev.message || "Keine weitere Beschreibung vorhanden."}
+                </div>
+                <a href="${ev.tmp_link}" target="_blank" class="btn-link">TRUCKERSMP LINK</a>
+            `;
+            container.appendChild(card);
+        });
+
+        // Nach dem Laden die Scroll-Animation aktivieren
+        handleScrollReveal();
+    }
+
+    // 2. Scroll-View Animation Logik
+    function handleScrollReveal() {
+        const cards = document.querySelectorAll('.event-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                }
+            });
+        }, {
+            threshold: 0.1 // Erscheint, wenn 10% der Karte sichtbar sind
+        });
+
+        cards.forEach(card => observer.observe(card));
+    }
+
+    // Initialer Start
+    loadIndexEvents();
+</script>
+
 </body>
 </html>
