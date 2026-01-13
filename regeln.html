@@ -3,39 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T Transporte | Regelwerk</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <title>D&T | Regelwerk</title>
     <style>
-        :root { --bg-color: #050505; --border: rgba(255, 255, 255, 0.1); --font-heading: 'Syncopate', sans-serif; --highlight: #0084ff; }
-        body { background-color: var(--bg-color); color: #fff; font-family: 'Inter', sans-serif; cursor: none; line-height: 1.8; }
-        #cursor-dot, #cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; z-index: 10002; }
-        #cursor-dot { width: 6px; height: 6px; background: #fff; }
-        #cursor-outline { width: 35px; height: 35px; border: 1px solid rgba(255,255,255,0.5); transition: all 0.3s ease-out; }
-        .container { max-width: 900px; margin: 10rem auto; padding: 0 2rem; }
-        .back-btn { position: fixed; top: 2rem; left: 2rem; padding: 1rem 2rem; border: 1px solid var(--border); color: #fff; text-decoration: none; font-family: var(--font-heading); font-size: 0.7rem; z-index: 1000; transition: 0.3s; }
-        .back-btn:hover { background: #fff; color: #000; }
-        h1 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 4rem; border-left: 5px solid var(--highlight); padding-left: 2rem; }
-        h2 { font-family: var(--font-heading); font-size: 1.1rem; color: var(--highlight); margin-top: 3rem; }
-        .rule-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 2rem; margin-top: 1rem; }
+        :root {
+            --blue: #0084ff;
+            --bg-gradient: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 200;
+            margin-bottom: 60px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 2.5rem;
+        }
+
+        /* Glassmorphism Rule Cards */
+        .rule-section {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            
+            /* Scroll Animation Start State */
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        /* Wenn sichtbar durch Scrollen */
+        .rule-section.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .rule-section h2 {
+            color: var(--blue);
+            margin-top: 0;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rule-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .rule-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #ccc;
+        }
+
+        .rule-list li:last-child {
+            border-bottom: none;
+        }
+
+        .rule-list li::before {
+            content: "➤";
+            color: var(--blue);
+            font-weight: bold;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 40px;
+            text-decoration: none;
+            color: #fff;
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: 0.3s;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .btn-back:hover {
+            background: var(--blue);
+            border-color: var(--blue);
+        }
     </style>
 </head>
 <body>
-    <div id="cursor-dot"></div><div id="cursor-outline"></div>
-    <a href="index.html" class="back-btn">← ZURÜCK</a>
-    <div class="container">
-        <h1>D&T TRANSPORTE<br>REGELWERK</h1>
-        <div class="rule-box">
-            <h2>§1 Allgemeines</h2>
-            <p>D&T Transporte steht für Professionalität. Jeder Fahrer repräsentiert die Spedition nach außen.</p>
-            <h2>§2 Fahrverhalten</h2>
-            <p>In ETS2 gilt ein Tempolimit von 90 km/h (Trucksbook-Wertung). Die StVO ist jederzeit zu beachten.</p>
-            <h2>§3 Konvois</h2>
-            <p>Bei Konvois ist die Firmenlackierung von D&T Transporte zwingend erforderlich.</p>
-        </div>
+
+<div class="container">
+    <h1>Unser Regelwerk</h1>
+
+    <div class="rule-section">
+        <h2>👮 §1 Allgemeines Verhalten</h2>
+        <ul class="rule-list">
+            <li>Ein respektvoller Umgangston ist oberstes Gebot. Beleidigungen, Rassismus oder Diskriminierung führen zum sofortigen Ausschluss.</li>
+            <li>Wir repräsentieren die Spedition "D&T Transporte". Verhalte dich dementsprechend professionell, sowohl In-Game als auch auf Discord.</li>
+            <li>Probleme unter Fahrern sind privat oder über die Speditionsleitung zu klären. Öffentliches Anprangern ist untersagt.</li>
+            <li>Das Teilen von pornografischen, illegalen oder extremen politischen Inhalten ist streng verboten.</li>
+        </ul>
     </div>
-    <script>
-        const dot = document.getElementById('cursor-dot'); const outline = document.getElementById('cursor-outline');
-        window.addEventListener('mousemove', (e) => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; outline.animate({ left: e.clientX + 'px', top: e.clientY + 'px' }, { duration: 500, fill: "forwards" }); });
-    </script>
+
+    <div class="rule-section">
+        <h2>🚛 §2 Verhalten in TruckersMP</h2>
+        <ul class="rule-list">
+            <li>Die offiziellen TruckersMP-Regeln sind jederzeit einzuhalten. Ein Bann in TruckersMP kann zum Ausschluss aus der Spedition führen.</li>
+            <li>Vorsätzliches Rammen, Blockieren (Blocking) oder rücksichtsloses Fahren (Reckless Driving) ist untersagt.</li>
+            <li>Fahre vorausschauend. Wir wollen Simulation, kein Need for Speed.</li>
+            <li>Bei Events oder Konvois ist auf den Event-Staff zu hören.</li>
+        </ul>
+    </div>
+
+    <div class="rule-section">
+        <h2>🚧 §3 Konvoiregeln</h2>
+        <ul class="rule-list">
+            <li>Es herrscht Anwesenheitspflicht im Discord-Voice während des Konvois (Zuhören ist Pflicht, Sprechen optional).</li>
+            <li>Der Sicherheitsabstand beträgt mindestens 50-100 Meter. Bei Lags ist der Abstand zu vergrößern.</li>
+            <li>Überholen ist während eines Konvois grundsätzlich verboten, es sei denn, die Konvoileitung gibt die Freigabe.</li>
+            <li>Der Firmen-Lackierung (Paintjob) ist bei offiziellen Konvois Pflicht.</li>
+            <li>Wer den Konvoi verlassen muss, kündigt dies kurz an und fährt sicher an den Straßenrand oder nutzt F7.</li>
+        </ul>
+    </div>
+
+    <div class="rule-section">
+        <h2>📈 §4 Aktivität & Anforderungen</h2>
+        <ul class="rule-list">
+            <li>Wir erwarten eine gewisse Grundaktivität. Längere Abwesenheiten (Urlaub, Krankheit) sind im Abwesenheitskanal zu melden.</li>
+            <li>Das Mindestalter für den Beitritt beträgt 16 Jahre (Ausnahmen durch die Geschäftsführung möglich).</li>
+            <li>Das Nutzen unseres Fahrer-Tags "D&T Transporte" im Tab-Menü ist erwünscht (Farbe: Blau).</li>
+            <li>Profilbilder und Namen sollten angemessen sein.</li>
+        </ul>
+    </div>
+
+    <div class="rule-section">
+        <h2>🔒 §5 Schlussbestimmungen</h2>
+        <ul class="rule-list">
+            <li>Die Speditionsleitung behält sich das Recht vor, das Regelwerk jederzeit anzupassen.</li>
+            <li>Unwissenheit schützt vor Strafe nicht.</li>
+            <li>Mit dem Beitritt zur Spedition akzeptierst du dieses Regelwerk vollumfänglich.</li>
+        </ul>
+    </div>
+
+    <center>
+        <a href="index.html" class="btn-back">← Zurück zur Startseite</a>
+    </center>
+</div>
+
+<script>
+    // Scroll Animation Logik (Identisch zu den anderen Seiten für Konsistenz)
+    document.addEventListener("DOMContentLoaded", function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                }
+            });
+        }, {
+            threshold: 0.15 // Element muss 15% sichtbar sein
+        });
+
+        const sections = document.querySelectorAll('.rule-section');
+        sections.forEach(sec => {
+            observer.observe(sec);
+        });
+    });
+</script>
+
 </body>
 </html>
