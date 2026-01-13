@@ -8,7 +8,6 @@
     <style>
         :root { 
             --blue: #0084ff; 
-            --blue-hover: #0056b3;
             --bg: #0a0a0a; 
             --card: #141414; 
             --green: #27ae60;
@@ -16,115 +15,94 @@
             --orange: #f39c12;
         }
 
-        body { 
-            background: var(--bg); 
-            color: #eee; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            padding: 0; 
-            margin: 0; 
-        }
-
+        body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; padding: 0; margin: 0; }
         .container { max-width: 1000px; margin: 40px auto; padding: 20px; }
 
         header { text-align: center; margin-bottom: 60px; }
         header h1 { letter-spacing: 12px; font-size: 3rem; margin-bottom: 10px; color: #fff; }
-        header p { color: var(--blue); font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
 
         /* Grid & Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        
         .card { 
-            background: var(--card); 
-            border: 1px solid #222; 
-            border-radius: 12px; 
-            padding: 25px; 
-            display: flex; 
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background: var(--card); border: 1px solid #222; border-radius: 12px; padding: 25px; 
+            display: flex; flex-direction: column; position: relative;
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        
         .card.confirmed { border-top: 4px solid var(--blue); }
-        .card.pending { border-top: 4px solid var(--orange); background: linear-gradient(145deg, #141414 0%, #1a1510 100%); }
-
-        .status-badge { 
-            position: absolute; top: 15px; right: 15px; 
-            font-size: 10px; padding: 4px 8px; border-radius: 20px; font-weight: bold; 
-        }
-
-        h3 { margin: 15px 0 5px 0; font-size: 1.4rem; color: #fff; }
-        .date-info { color: var(--blue); font-size: 0.9rem; margin-bottom: 15px; display: flex; align-items: center; gap: 5px; }
-        .message-text { font-size: 0.95rem; color: #aaa; font-style: italic; line-height: 1.5; flex-grow: 1; }
+        .card.pending { border-top: 4px solid var(--orange); opacity: 0.8; }
 
         /* Formular */
-        .form-section { 
-            margin-top: 80px; 
-            background: #111; 
-            padding: 40px; 
-            border-radius: 15px; 
-            border: 1px solid #222;
-        }
-        .form-section h2 { margin-top: 0; border-bottom: 2px solid var(--blue); display: inline-block; padding-bottom: 5px; }
-        
-        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-section { margin-top: 80px; background: #111; padding: 40px; border-radius: 15px; border: 1px solid #222; }
         input, textarea { 
             width: 100%; background: #000; border: 1px solid #333; color: #fff; 
-            padding: 15px; margin: 10px 0; border-radius: 8px; font-size: 1rem;
-            transition: border 0.3s;
+            padding: 15px; margin: 10px 0; border-radius: 8px; box-sizing: border-box;
         }
-        input:focus, textarea:focus { border-color: var(--blue); outline: none; }
-        
         .btn-main { 
             background: var(--blue); color: white; border: none; padding: 18px; 
-            width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; 
-            font-size: 1.1rem; margin-top: 20px; transition: 0.3s;
-        }
-        .btn-main:hover { background: white; color: black; }
-
-        /* Admin Buttons */
-        .admin-bar { 
-            display: flex; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; 
-        }
-        .admin-btn { 
-            flex: 1; padding: 10px; border: none; border-radius: 6px; 
-            color: white; font-weight: bold; cursor: pointer; font-size: 12px;
+            width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem;
         }
 
-        .footer { text-align: center; margin-top: 80px; padding: 40px; opacity: 0.4; font-size: 0.8rem; }
-        .admin-trigger { cursor: pointer; color: var(--blue); }
-        
-        @media (max-width: 600px) { .input-group { grid-template-columns: 1fr; } }
+        /* --- MODERNES POP-UP (MODAL) --- */
+        #customModal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: #1a1a1a; border: 2px solid var(--blue); padding: 40px;
+            border-radius: 20px; max-width: 500px; text-align: center;
+            transform: scale(0.7); opacity: 0; transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 30px rgba(0, 132, 255, 0.2);
+        }
+        #customModal.active { display: flex; }
+        #customModal.active .modal-content { transform: scale(1); opacity: 1; }
+
+        .modal-icon { font-size: 50px; color: var(--green); margin-bottom: 20px; }
+        .modal-text { font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; }
+        .modal-btn { 
+            background: var(--blue); color: white; border: none; padding: 12px 30px; 
+            border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+
+        /* Admin Layout */
+        .admin-bar { display: flex; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; }
+        .admin-btn { flex: 1; padding: 8px; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 11px; }
+
+        .footer { text-align: center; margin-top: 80px; padding: 40px; opacity: 0.3; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
+<div id="customModal">
+    <div class="modal-content">
+        <div class="modal-icon">✔</div>
+        <h2 style="color: #fff; margin-top: 0;">Einladung erhalten!</h2>
+        <div class="modal-text">
+            Wir freuen uns sehr über eure Event-Einladung! <br><br>
+            Slotbuchungen könnt ihr gerne über unseren <b>Discord</b> einreichen – wir nehmen grundsätzlich jeden Slot an. 
+            Sollte keine Rückmeldung unsererseits erfolgen, könnt ihr fest mit unserer Teilnahme am Event rechnen.
+        </div>
+        <button class="modal-btn" onclick="closeModal()">ALLES KLAR!</button>
+    </div>
+</div>
+
 <div class="container">
     <header>
-        <p>TruckersMP VTC Portal</p>
         <h1>EVENT HUB</h1>
     </header>
 
-    <div id="eventList" class="grid">
-        </div>
+    <div id="eventList" class="grid"></div>
 
     <div class="form-section">
-        <h2>EINLADUNG EINREICHEN</h2>
-        <p style="color: #666; margin-bottom: 20px;">Tragt hier euer Event ein. Unser Management wird die Anfrage zeitnah prüfen.</p>
-        
-        <div class="input-group">
-            <input type="text" id="vName" placeholder="VTC Name (z.B. D&T Logistik)">
-            <input type="text" id="vDate" placeholder="Datum (z.B. 24.01.2025, 20 Uhr)">
-        </div>
-        <input type="text" id="vLink" placeholder="TruckersMP Event Link (https://...)">
-        <textarea id="vMsg" rows="4" placeholder="Eure Nachricht an uns..."></textarea>
-        
-        <button class="btn-main" onclick="submitEvent()">EINLADUNG JETZT ABSENDEN</button>
+        <h2>EVENT EINREICHEN</h2>
+        <input type="text" id="vName" placeholder="VTC Name">
+        <input type="text" id="vDate" placeholder="Datum & Uhrzeit">
+        <input type="text" id="vLink" placeholder="TruckersMP Link">
+        <textarea id="vMsg" rows="4" placeholder="Nachricht an uns..."></textarea>
+        <button class="btn-main" onclick="submitEvent()">EINLADUNG ABSENDEN</button>
     </div>
 
     <div class="footer">
-        &copy; 2025 D&T Logistik Management | <span class="admin-trigger" onclick="adminLogin()">Admin Login</span>
+        D&T Logistik Management | <span style="cursor:pointer; color:var(--blue);" onclick="adminLogin()">Admin Access</span>
     </div>
 </div>
 
@@ -135,107 +113,75 @@
 
     let isAdmin = sessionStorage.getItem('dt_admin_auth') === 'true';
 
-    // 1. Daten laden
+    // 1. Laden
     async function fetchEvents() {
-        const { data, error } = await _supabase
-            .from('dt-event-portal')
-            .select('*')
-            .order('id', { ascending: false });
-
-        if (error) { console.error("Fehler:", error); return; }
+        const { data, error } = await _supabase.from('dt-event-portal').select('*').order('id', { ascending: false });
+        if (error) return;
 
         const container = document.getElementById('eventList');
         container.innerHTML = '';
 
         data.forEach(item => {
             if (!isAdmin && !item.confirmed) return;
-
             const card = document.createElement('div');
             card.className = `card ${item.confirmed ? 'confirmed' : 'pending'}`;
-            
             card.innerHTML = `
-                <div class="status-badge" style="background:${item.confirmed ? 'var(--blue)' : 'var(--orange)'}">
+                <div style="font-size:10px; font-weight:bold; color:${item.confirmed ? 'var(--blue)' : 'var(--orange)'}">
                     ${item.confirmed ? 'BESTÄTIGT' : 'IN PRÜFUNG'}
                 </div>
                 <h3>${item.vtc_name}</h3>
-                <div class="date-info">📅 ${item.event_date}</div>
-                <div class="message-text">"${item.message || 'Keine Nachricht hinterlassen.'}"</div>
-                ${item.tmp_link ? `<a href="${item.tmp_link}" target="_blank" style="color:var(--blue); text-decoration:none; font-size:12px; margin-top:15px; font-weight:bold;">➜ TruckersMP Event Seite</a>` : ''}
+                <div style="color:var(--blue); font-size:13px; margin-bottom:10px;">📅 ${item.event_date}</div>
+                <div style="color:#aaa; font-size:13px;">${item.message || ''}</div>
             `;
 
             if (isAdmin) {
                 const bar = document.createElement('div');
                 bar.className = 'admin-bar';
-                
                 if (!item.confirmed) {
-                    const b1 = document.createElement('button');
-                    b1.className = 'admin-btn';
-                    b1.style.background = 'var(--green)';
-                    b1.innerText = 'FREIGEBEN';
-                    b1.onclick = () => updateEvent(item.id, true);
+                    const b1 = document.createElement('button'); b1.className='admin-btn'; b1.style.background='var(--green)'; b1.innerText='OK'; b1.onclick=()=>update(item.id, true);
                     bar.appendChild(b1);
                 }
-
-                const b2 = document.createElement('button');
-                b2.className = 'admin-btn';
-                b2.style.background = 'var(--red)';
-                b2.innerText = 'LÖSCHEN';
-                b2.onclick = () => removeEvent(item.id);
+                const b2 = document.createElement('button'); b2.className='admin-btn'; b2.style.background='var(--red)'; b2.innerText='DEL'; b2.onclick=()=>remove(item.id);
                 bar.appendChild(b2);
-                
                 card.appendChild(bar);
             }
             container.appendChild(card);
         });
     }
 
-    // 2. Event einreichen + Pop-Up
+    // 2. Einreichen & Pop-up zeigen
     async function submitEvent() {
         const n = document.getElementById('vName').value;
         const d = document.getElementById('vDate').value;
         const l = document.getElementById('vLink').value;
         const m = document.getElementById('vMsg').value;
 
-        if(!n || !d || !l) { alert("Bitte fülle alle Pflichtfelder aus."); return; }
+        if(!n || !d || !l) return alert("Felder ausfüllen!");
 
-        const { error } = await _supabase.from('dt-event-portal').insert([
-            { vtc_name: n, event_date: d, tmp_link: l, message: m, confirmed: false }
-        ]);
+        const { error } = await _supabase.from('dt-event-portal').insert([{ vtc_name: n, event_date: d, tmp_link: l, message: m, confirmed: false }]);
 
-        if (error) {
-            alert("Fehler: " + error.message);
-        } else {
-            // DEIN TEXT HIER
-            alert("Wir freuen uns für eure Event einladung, Slotbuchungen könnt ihr bei unserem Discord einreiche, wir nehmen aber jeden Slot. Bei keiner Rückmeldung nehmen wir am Event teil.");
-            location.reload();
+        if (!error) {
+            // Zeigt das neue Modal-Fenster
+            const modal = document.getElementById('customModal');
+            modal.classList.add('active');
         }
     }
 
-    // 3. Admin Login
+    function closeModal() {
+        location.reload(); // Seite neu laden nach Bestätigung
+    }
+
+    // Admin Logik
     window.adminLogin = function() {
-        const p = prompt("Management-Passwort eingeben:");
-        if (p === "dic2026!") {
+        if (prompt("Passwort:") === "dic2026") {
             isAdmin = true;
             sessionStorage.setItem('dt_admin_auth', 'true');
-            alert("Zugriff gewährt!");
             fetchEvents();
-        } else {
-            alert("Passwort inkorrekt.");
         }
     };
 
-    // Hilfsfunktionen
-    async function updateEvent(id, status) {
-        await _supabase.from('dt-event-portal').update({ confirmed: status }).eq('id', id);
-        fetchEvents();
-    }
-
-    async function removeEvent(id) {
-        if(confirm("Event unwiderruflich löschen?")) {
-            await _supabase.from('dt-event-portal').delete().eq('id', id);
-            fetchEvents();
-        }
-    }
+    async function update(id, s) { await _supabase.from('dt-event-portal').update({ confirmed: s }).eq('id', id); fetchEvents(); }
+    async function remove(id) { if(confirm("Löschen?")) { await _supabase.from('dt-event-portal').delete().eq('id', id); fetchEvents(); } }
 
     fetchEvents();
 </script>
