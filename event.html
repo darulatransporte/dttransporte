@@ -2,55 +2,40 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>D&T | Event Hub & Management</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <title>D&T | Event Hub & Admin</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root { --blue: #0084ff; --bg: #0a0a0a; --card: #141414; }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; padding: 4rem 2rem; }
-        .container { max-width: 1100px; margin: 0 auto; }
-        
-        nav { margin-bottom: 4rem; text-align: center; }
-        nav a { color: #555; text-decoration: none; font-family: 'Syncopate'; font-size: 0.7rem; margin: 0 20px; transition: 0.3s; }
-        nav a:hover { color: var(--blue); }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 80px; }
-        .card { background: var(--card); border: 1px solid #222; padding: 25px; border-radius: 4px; transition: 0.3s; }
-        .card.confirmed { border-left: 5px solid var(--blue); }
-        .card.pending { border-left: 5px solid #f39c12; background: rgba(243, 156, 18, 0.02); }
-        
-        .status-tag { font-size: 9px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; padding: 4px 8px; border-radius: 2px; margin-bottom: 15px; display: inline-block; }
-        
-        .form-box { background: #000; border: 1px solid #222; padding: 50px; max-width: 700px; margin: 0 auto; }
-        h2 { font-family: 'Syncopate'; font-size: 1rem; letter-spacing: 4px; margin-bottom: 30px; text-align: center; color: var(--blue); }
-        
-        input, textarea { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 15px; margin-bottom: 15px; border-radius: 2px; }
-        .submit-btn { width: 100%; background: var(--blue); color: #fff; border: none; padding: 18px; font-family: 'Syncopate'; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
-        .submit-btn:hover { background: #fff; color: #000; }
-
-        .admin-bar { display: flex; gap: 10px; margin-top: 20px; }
-        .admin-btn { flex: 1; padding: 10px; border: none; font-size: 10px; font-family: 'Syncopate'; cursor: pointer; color: #fff; }
-
-        .footer-login { text-align: center; margin-top: 100px; opacity: 0.2; font-size: 10px; cursor: pointer; transition: 0.3s; }
-        .footer-login:hover { opacity: 1; color: var(--blue); }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; padding: 2rem; margin: 0; }
+        .container { max-width: 900px; margin: 0 auto; padding-bottom: 100px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 40px 0; }
+        .card { background: var(--card); border: 1px solid #222; padding: 20px; border-radius: 4px; border-left: 4px solid #333; }
+        .card.confirmed { border-left-color: var(--blue); }
+        .card.pending { border-left-color: #f39c12; }
+        .form-box { background: #111; padding: 40px; border: 1px solid #222; margin-top: 40px; }
+        input, textarea { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; margin: 10px 0; box-sizing: border-box; }
+        .btn { background: var(--blue); border: none; padding: 15px; width: 100%; font-weight: bold; cursor: pointer; color: #fff; transition: 0.3s; }
+        .btn:hover { background: #fff; color: #000; }
+        .admin-btn { padding: 8px 12px; font-size: 10px; cursor: pointer; color: white; border: none; margin-top: 15px; margin-right: 10px; border-radius: 2px; font-weight: bold; }
+        .footer-login { text-align: left; margin-top: 80px; opacity: 0.1; cursor: pointer; font-size: 10px; transition: 0.3s; }
+        .footer-login:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <nav><a href="index.html">ZURÜCK ZUR STARTSEITE</a></nav>
+    <h1 style="text-align: center; letter-spacing: 5px; font-family: sans-serif;">EVENT ZENTRALE</h1>
 
-    <h2 style="margin-bottom: 50px;">GEPLANTE EVENTS</h2>
-    <div class="grid" id="eventHub">
-        </div>
+    <div class="grid" id="eventList"></div>
 
     <div class="form-box">
-        <h2>EINLADUNG EINREICHEN</h2>
-        <input type="text" id="inputVTC" placeholder="Name deiner Spedition">
-        <input type="text" id="inputDate" placeholder="Datum (z.B. 15.02.2026 - 19:30)">
-        <input type="text" id="inputLink" placeholder="TruckersMP Event Link">
-        <textarea id="inputMsg" placeholder="Nachricht an D&T (Optional)" rows="4"></textarea>
-        <button class="submit-btn" onclick="sendToSupabase()">ANFRAGE SENDEN</button>
+        <h3 style="margin-top:0; color: var(--blue);">EVENT EINREICHEN</h3>
+        <p style="font-size: 12px; color: #666;">Andere Speditionen können hier ihre Touren vorschlagen.</p>
+        <input type="text" id="vName" placeholder="VTC Name">
+        <input type="text" id="vDate" placeholder="Datum & Uhrzeit (z.B. 25.05.2026 - 20:00)">
+        <input type="text" id="vLink" placeholder="TruckersMP Event Link">
+        <textarea id="vMsg" placeholder="Nachricht an das D&T Management" rows="3"></textarea>
+        <button class="btn" onclick="submitEvent()">ANFRAGE ABSCHICKEN</button>
     </div>
 
     <div class="footer-login" onclick="adminLogin()">MANAGEMENT ACCESS</div>
@@ -62,80 +47,87 @@
     const _supabase = supabase.createClient(URL, KEY);
     let isAdmin = false;
 
-    async function loadHub() {
+    async function loadEvents() {
         const { data, error } = await _supabase.from('dt-event-portal').select('*').order('id', { ascending: false });
-        const container = document.getElementById('eventHub');
-        container.innerHTML = '';
+        const list = document.getElementById('eventList');
+        list.innerHTML = '';
 
-        data.forEach(ev => {
-            if(!isAdmin && !ev.confirmed) return;
+        if(data) {
+            data.forEach(ev => {
+                // Besucher sehen nur confirmed, Admins sehen alles
+                if(!isAdmin && !ev.confirmed) return;
 
-            const card = document.createElement('div');
-            card.className = `card ${ev.confirmed ? 'confirmed' : 'pending'}`;
-            
-            card.innerHTML = `
-                <span class="status-tag" style="background:${ev.confirmed ? '#0084ff' : '#f39c12'}">
-                    ${ev.confirmed ? 'Bestätigt' : 'Prüfung läuft'}
-                </span>
-                <h3 style="font-family:'Syncopate'; font-size:0.8rem; margin:10px 0;">${ev.vtc_name}</h3>
-                <p style="font-size:0.85rem; color:#777;">📅 ${ev.event_date}</p>
-                <a href="${ev.tmp_link}" target="_blank" style="color:var(--blue); font-size:11px; text-decoration:none; font-weight:bold;">TMP EVENT LINK</a>
-            `;
-
-            if(isAdmin) {
-                const bar = document.createElement('div');
-                bar.className = 'admin-bar';
-                bar.innerHTML = `
-                    ${!ev.confirmed ? `<button class="admin-btn" style="background:#2ecc71" onclick="setConfirm(${ev.id}, true)">ANNEHMEN</button>` : ''}
-                    <button class="admin-btn" style="background:#e74c3c" onclick="deleteEv(${ev.id})">LÖSCHEN</button>
+                const card = document.createElement('div');
+                card.className = `card ${ev.confirmed ? 'confirmed' : 'pending'}`;
+                card.innerHTML = `
+                    <div style="font-size: 10px; font-weight: bold; color:${ev.confirmed ? '#0084ff' : '#f39c12'}">
+                        ${ev.confirmed ? 'TEILNAHME BESTÄTIGT' : 'WARTET AUF PRÜFUNG'}
+                    </div>
+                    <h3 style="margin: 10px 0 5px 0; font-size: 1.1rem;">${ev.vtc_name}</h3>
+                    <div style="font-size: 13px; color: #aaa;">📅 ${ev.event_date}</div>
+                    <div style="font-size: 12px; color: #555; margin-top: 5px;">${ev.meesage || ''}</div>
                 `;
-                card.appendChild(bar);
-            }
-            container.appendChild(card);
-        });
+
+                if(isAdmin) {
+                    const btnBox = document.createElement('div');
+                    if(!ev.confirmed) {
+                        const ok = document.createElement('button');
+                        ok.innerText = "FREIGEBEN"; ok.className = "admin-btn"; ok.style.background = "#27ae60";
+                        ok.onclick = () => updateStatus(ev.id, true);
+                        btnBox.appendChild(ok);
+                    }
+                    const del = document.createElement('button');
+                    del.innerText = "LÖSCHEN"; del.className = "admin-btn"; del.style.background = "#c0392b";
+                    del.onclick = () => deleteEvent(ev.id);
+                    btnBox.appendChild(del);
+                    card.appendChild(btnBox);
+                }
+                list.appendChild(card);
+            });
+        }
     }
 
-    async function sendToSupabase() {
-        const n = document.getElementById('inputVTC').value;
-        const d = document.getElementById('inputDate').value;
-        const l = document.getElementById('inputLink').value;
-        const m = document.getElementById('inputMsg').value;
+    async function submitEvent() {
+        const vtc = document.getElementById('vName').value;
+        const dat = document.getElementById('vDate').value;
+        const lin = document.getElementById('vLink').value;
+        const msg = document.getElementById('vMsg').value;
 
-        if(!n || !d || !l) return alert("Bitte alle Pflichtfelder ausfüllen!");
+        if(!vtc || !dat || !lin) return alert("Bitte Name, Datum und Link ausfüllen!");
 
-        const { error } = await _supabase.from('dt-event-portal').insert([{
-            vtc_name: n, event_date: d, tmp_link: l, message: m, confirmed: false
-        }]);
+        // WICHTIG: Deine Spalte heißt laut Screenshot "meesage" (mit Doppel-E)
+        const { error } = await _supabase.from('dt-event-portal').insert([
+            { vtc_name: vtc, event_date: dat, tmp_link: lin, meesage: msg, confirmed: false }
+        ]);
 
-        if(!error) {
-            alert("Erfolgreich! Das Management prüft dein Event.");
+        if (error) {
+            console.error(error);
+            alert("Fehler beim Absenden: " + error.message);
+        } else {
+            alert("Erfolgreich! Wir prüfen deine Anfrage.");
             location.reload();
         }
     }
 
     function adminLogin() {
-        const p = prompt("Admin Passwort:");
-        if(p === "DT2026") {
-            isAdmin = true;
-            loadHub();
-            alert("Admin Modus an!");
+        if(prompt("Management Passwort:") === "DT2026") {
+            isAdmin = true; loadEvents(); alert("Admin-Modus aktiviert!");
         }
     }
 
-    async function setConfirm(id, val) {
-        await _supabase.from('dt-event-portal').update({ confirmed: val }).eq('id', id);
-        loadHub();
+    async function updateStatus(id, val) {
+        const { error } = await _supabase.from('dt-event-portal').update({ confirmed: val }).eq('id', id);
+        if(!error) loadEvents();
     }
 
-    async function deleteEv(id) {
-        if(confirm("Löschen?")) {
-            await _supabase.from('dt-event-portal').delete().eq('id', id);
-            loadHub();
+    async function deleteEvent(id) {
+        if(confirm("Event wirklich löschen?")) {
+            const { error } = await _supabase.from('dt-event-portal').delete().eq('id', id);
+            if(!error) loadEvents();
         }
     }
 
-    loadHub();
+    loadEvents();
 </script>
-
 </body>
 </html>
