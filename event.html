@@ -2,74 +2,140 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>D&T | Event Hub</title>
+    <title>D&T | Event Hub & Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root { --blue: #0084ff; --bg: #0a0a0a; --card: #141414; }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; padding: 5vw; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: var(--card); border: 1px solid #222; padding: 20px; border-radius: 8px; border-left: 4px solid var(--blue); }
-        .form-section { background: #111; padding: 30px; border-radius: 8px; margin-top: 50px; border: 1px dashed #333; }
-        input, textarea { width: 100%; background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 12px; margin: 10px 0; border-radius: 4px; }
-        button { background: var(--blue); color: #fff; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; border-radius: 4px; }
-        button:hover { background: #fff; color: #000; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; padding: 4rem 2rem; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        
+        nav { margin-bottom: 4rem; text-align: center; }
+        nav a { color: #555; text-decoration: none; font-family: 'Syncopate'; font-size: 0.7rem; margin: 0 20px; transition: 0.3s; }
+        nav a:hover { color: var(--blue); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 80px; }
+        .card { background: var(--card); border: 1px solid #222; padding: 25px; border-radius: 4px; transition: 0.3s; }
+        .card.confirmed { border-left: 5px solid var(--blue); }
+        .card.pending { border-left: 5px solid #f39c12; background: rgba(243, 156, 18, 0.02); }
+        
+        .status-tag { font-size: 9px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; padding: 4px 8px; border-radius: 2px; margin-bottom: 15px; display: inline-block; }
+        
+        .form-box { background: #000; border: 1px solid #222; padding: 50px; max-width: 700px; margin: 0 auto; }
+        h2 { font-family: 'Syncopate'; font-size: 1rem; letter-spacing: 4px; margin-bottom: 30px; text-align: center; color: var(--blue); }
+        
+        input, textarea { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 15px; margin-bottom: 15px; border-radius: 2px; }
+        .submit-btn { width: 100%; background: var(--blue); color: #fff; border: none; padding: 18px; font-family: 'Syncopate'; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
+        .submit-btn:hover { background: #fff; color: #000; }
+
+        .admin-bar { display: flex; gap: 10px; margin-top: 20px; }
+        .admin-btn { flex: 1; padding: 10px; border: none; font-size: 10px; font-family: 'Syncopate'; cursor: pointer; color: #fff; }
+
+        .footer-login { text-align: center; margin-top: 100px; opacity: 0.2; font-size: 10px; cursor: pointer; transition: 0.3s; }
+        .footer-login:hover { opacity: 1; color: var(--blue); }
     </style>
 </head>
 <body>
 
-    <h1>BESTÄTIGTE EVENTS</h1>
-    <div class="grid" id="eventContainer">
+<div class="container">
+    <nav><a href="index.html">ZURÜCK ZUR STARTSEITE</a></nav>
+
+    <h2 style="margin-bottom: 50px;">GEPLANTE EVENTS</h2>
+    <div class="grid" id="eventHub">
         </div>
 
-    <div class="form-section">
-        <h2>EVENT EINREICHEN</h2>
-        <p style="color: #666; font-size: 0.8rem;">Andere VTCs können hier ihre Einladung posten.</p>
-        <input type="text" id="vtc_name" placeholder="Name deiner Spedition">
-        <input type="text" id="event_date" placeholder="Datum & Uhrzeit">
-        <input type="text" id="tmp_link" placeholder="TruckersMP Link">
-        <textarea id="message" placeholder="Zusatzinfos..."></textarea>
-        <button onclick="submitEvent()">ANFRAGE ABSCHICKEN</button>
+    <div class="form-box">
+        <h2>EINLADUNG EINREICHEN</h2>
+        <input type="text" id="inputVTC" placeholder="Name deiner Spedition">
+        <input type="text" id="inputDate" placeholder="Datum (z.B. 15.02.2026 - 19:30)">
+        <input type="text" id="inputLink" placeholder="TruckersMP Event Link">
+        <textarea id="inputMsg" placeholder="Nachricht an D&T (Optional)" rows="4"></textarea>
+        <button class="submit-btn" onclick="sendToSupabase()">ANFRAGE SENDEN</button>
     </div>
 
-    <script>
-        // DEINE DATEN VON SUPABASE (Settings > API)
-        const URL = 'DEINE_SUPABASE_URL';
-        const KEY = 'DEIN_ANON_KEY';
-        const supabase = exports.supabase.createClient(URL, KEY);
+    <div class="footer-login" onclick="adminLogin()">MANAGEMENT ACCESS</div>
+</div>
 
-        // 1. Events laden (Nur confirmed = true)
-        async function loadEvents() {
-            const { data } = await supabase.from('dt-event-portal').select('*').eq('confirmed', true);
-            const container = document.getElementById('eventContainer');
-            container.innerHTML = data.length ? '' : '<p>Aktuell keine geplanten Events.</p>';
-            data.forEach(ev => {
-                container.innerHTML += `
-                    <div class="card">
-                        <h3>${ev.vtc_name}</h3>
-                        <p>📅 ${ev.event_date}</p>
-                        <a href="${ev.tmp_link}" target="_blank" style="color:var(--blue)">TruckersMP Link</a>
-                    </div>`;
-            });
-        }
+<script>
+    const URL = 'https://dihdeuphymaxgxthnjxq.supabase.co';
+    const KEY = 'sb_publishable_DOAE2-PtSAC0J2iqFOvfyg_AihL7t74';
+    const _supabase = supabase.createClient(URL, KEY);
+    let isAdmin = false;
 
-        // 2. Event einreichen
-        async function submitEvent() {
-            const name = document.getElementById('vtc_name').value;
-            const date = document.getElementById('event_date').value;
-            const link = document.getElementById('tmp_link').value;
+    async function loadHub() {
+        const { data, error } = await _supabase.from('dt-event-portal').select('*').order('id', { ascending: false });
+        const container = document.getElementById('eventHub');
+        container.innerHTML = '';
 
-            const { error } = await supabase.from('dt-event-portal').insert([
-                { vtc_name: name, event_date: date, tmp_link: link, confirmed: false }
-            ]);
+        data.forEach(ev => {
+            if(!isAdmin && !ev.confirmed) return;
 
-            if (error) { alert("Fehler: " + error.message); }
-            else { 
-                alert("Erfolgreich eingereicht! Wartet auf Freigabe durch D&T."); 
-                location.reload(); 
+            const card = document.createElement('div');
+            card.className = `card ${ev.confirmed ? 'confirmed' : 'pending'}`;
+            
+            card.innerHTML = `
+                <span class="status-tag" style="background:${ev.confirmed ? '#0084ff' : '#f39c12'}">
+                    ${ev.confirmed ? 'Bestätigt' : 'Prüfung läuft'}
+                </span>
+                <h3 style="font-family:'Syncopate'; font-size:0.8rem; margin:10px 0;">${ev.vtc_name}</h3>
+                <p style="font-size:0.85rem; color:#777;">📅 ${ev.event_date}</p>
+                <a href="${ev.tmp_link}" target="_blank" style="color:var(--blue); font-size:11px; text-decoration:none; font-weight:bold;">TMP EVENT LINK</a>
+            `;
+
+            if(isAdmin) {
+                const bar = document.createElement('div');
+                bar.className = 'admin-bar';
+                bar.innerHTML = `
+                    ${!ev.confirmed ? `<button class="admin-btn" style="background:#2ecc71" onclick="setConfirm(${ev.id}, true)">ANNEHMEN</button>` : ''}
+                    <button class="admin-btn" style="background:#e74c3c" onclick="deleteEv(${ev.id})">LÖSCHEN</button>
+                `;
+                card.appendChild(bar);
             }
-        }
+            container.appendChild(card);
+        });
+    }
 
-        loadEvents();
-    </script>
+    async function sendToSupabase() {
+        const n = document.getElementById('inputVTC').value;
+        const d = document.getElementById('inputDate').value;
+        const l = document.getElementById('inputLink').value;
+        const m = document.getElementById('inputMsg').value;
+
+        if(!n || !d || !l) return alert("Bitte alle Pflichtfelder ausfüllen!");
+
+        const { error } = await _supabase.from('dt-event-portal').insert([{
+            vtc_name: n, event_date: d, tmp_link: l, message: m, confirmed: false
+        }]);
+
+        if(!error) {
+            alert("Erfolgreich! Das Management prüft dein Event.");
+            location.reload();
+        }
+    }
+
+    function adminLogin() {
+        const p = prompt("Admin Passwort:");
+        if(p === "DT2026") {
+            isAdmin = true;
+            loadHub();
+            alert("Admin Modus an!");
+        }
+    }
+
+    async function setConfirm(id, val) {
+        await _supabase.from('dt-event-portal').update({ confirmed: val }).eq('id', id);
+        loadHub();
+    }
+
+    async function deleteEv(id) {
+        if(confirm("Löschen?")) {
+            await _supabase.from('dt-event-portal').delete().eq('id', id);
+            loadHub();
+        }
+    }
+
+    loadHub();
+</script>
+
 </body>
 </html>
