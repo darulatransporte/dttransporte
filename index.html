@@ -3,50 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T Transporte | Official Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <title>D&T Transporte | Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --bg-color: #050505; --accent: #ffffff; --border: rgba(255, 255, 255, 0.1); --font-main: 'Inter', sans-serif; --font-heading: 'Syncopate', sans-serif; --highlight: #0084ff; }
-        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url("https://grainy-gradients.vercel.app/noise.svg"); opacity: 0.03; pointer-events: none; z-index: 10000; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); cursor: none; }
-        body { background-color: var(--bg-color); color: #fff; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
-        #cursor-dot, #cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; z-index: 10002; }
-        #cursor-dot { width: 6px; height: 6px; background: #fff; }
-        #cursor-outline { width: 35px; height: 35px; border: 1px solid rgba(255,255,255,0.5); transition: all 0.3s ease-out; }
-        nav { padding: 1.5rem 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(10px); }
-        .logo { font-family: var(--font-heading); font-size: 1.2rem; letter-spacing: 4px; color: #fff; text-decoration: none; }
-        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
-        .nav-links a { text-decoration: none; color: #666; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
-        .nav-links a:hover { color: #fff; }
-        .hero { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-family: var(--font-heading); font-size: clamp(2rem, 10vw, 5rem); margin-bottom: 2rem; line-height: 1.1; }
-        .nav-box { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .btn { padding: 1.2rem 2.5rem; border: 1px solid #fff; color: #fff; text-decoration: none; font-family: var(--font-heading); font-size: 0.65rem; letter-spacing: 2px; transition: 0.4s; }
-        .btn:hover { background: #fff; color: #000; }
-        .btn-blue { border-color: var(--highlight); color: var(--highlight); }
-        .btn-blue:hover { background: var(--highlight); color: #fff; }
+        :root { --bg: #050505; --blue: #0084ff; --card: #111; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; }
+        nav { padding: 2rem; display: flex; justify-content: center; gap: 30px; border-bottom: 1px solid #222; }
+        nav a { color: #888; text-decoration: none; font-family: 'Syncopate'; font-size: 0.7rem; transition: 0.3s; }
+        nav a:hover { color: var(--blue); }
+
+        .hero { text-align: center; padding: 8rem 2rem; }
+        .hero h1 { font-family: 'Syncopate'; font-size: 3.5rem; letter-spacing: 10px; margin: 0; }
+        
+        .event-section { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+        .section-title { font-family: 'Syncopate'; font-size: 1.2rem; color: var(--blue); margin-bottom: 3rem; text-align: center; }
+        
+        .event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .event-card { background: var(--card); border: 1px solid #222; padding: 30px; border-radius: 4px; transition: 0.3s; }
+        .event-card:hover { border-color: var(--blue); transform: translateY(-5px); }
+        .event-card h3 { margin: 0 0 15px 0; font-family: 'Syncopate'; font-size: 0.9rem; }
+        .event-card p { color: #888; font-size: 0.9rem; margin-bottom: 20px; }
+        .tmp-btn { color: var(--blue); text-decoration: none; font-size: 0.75rem; font-weight: bold; border: 1px solid var(--blue); padding: 8px 15px; }
     </style>
 </head>
 <body>
-    <div id="cursor-dot"></div><div id="cursor-outline"></div>
+
     <nav>
-        <a href="index.html" class="logo">D&T TRANSPORTE</a>
-        <ul class="nav-links">
-            <li><a href="regeln.html">Regelwerk</a></li>
-            <li><a href="https://discord.gg/QKquEtXhW5" target="_blank">Discord</a></li>
-            <li><a href="https://truckersmp.com/vtc/85915" target="_blank">TruckersMP</a></li>
-        </ul>
+        <a href="index.html">HOME</a>
+        <a href="event.html">EVENTS</a>
+        <a href="bewerbung.html">KARRIERE</a>
     </nav>
+
     <div class="hero">
-        <h1>BEYOND<br>LOGISTICS</h1>
-        <div class="nav-box">
-            <a href="event.html" class="btn">EVENTS</a>
-            <a href="bewerbung.html" class="btn btn-blue">BEWERBEN</a>
-        </div>
+        <h1>D&T TRANSPORTE</h1>
+        <p style="color: #666; margin-top: 20px;">VTC Excellence in Sim-Trucking</p>
     </div>
+
+    <section class="event-section">
+        <h2 class="section-title">UNSERE NÄCHSTEN TOUREN</h2>
+        <div id="indexEventList" class="event-grid">
+            <p style="text-align:center; color:#333; grid-column: 1/-1;">Suche nach aktiven Touren...</p>
+        </div>
+    </section>
+
     <script>
-        const dot = document.getElementById('cursor-dot'); const outline = document.getElementById('cursor-outline');
-        window.addEventListener('mousemove', (e) => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; outline.animate({ left: e.clientX + 'px', top: e.clientY + 'px' }, { duration: 500, fill: "forwards" }); });
+        const SUPABASE_URL = 'DEINE_URL';
+        const SUPABASE_KEY = 'DEIN_KEY';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadIndexEvents() {
+            const { data, error } = await _supabase
+                .from('dt-event-portal')
+                .select('*')
+                .eq('confirmed', true)
+                .order('id', { ascending: false })
+                .limit(3);
+
+            const container = document.getElementById('indexEventList');
+            if (data && data.length > 0) {
+                container.innerHTML = '';
+                data.forEach(ev => {
+                    container.innerHTML += `
+                        <div class="event-card">
+                            <h3>${ev.vtc_name}</h3>
+                            <p>📅 ${ev.event_date}</p>
+                            <a href="${ev.tmp_link}" target="_blank" class="tmp-btn">TRUCKERSMP LINK</a>
+                        </div>`;
+                });
+            } else {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#444;">Momentan keine Events geplant.</p>';
+            }
+        }
+        loadIndexEvents();
     </script>
 </body>
 </html>
