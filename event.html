@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>D&T | Event Hub & Admin</title>
+    <title>D&T | Event Hub & Management</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root { --blue: #0084ff; --bg: #0a0a0a; --card: #141414; }
@@ -18,7 +18,6 @@
         .btn:hover { background: #fff; color: #000; }
         .admin-btn { padding: 8px 12px; font-size: 10px; cursor: pointer; color: white; border: none; margin-top: 15px; margin-right: 10px; border-radius: 2px; font-weight: bold; }
         .footer-login { text-align: left; margin-top: 80px; opacity: 0.1; cursor: pointer; font-size: 10px; transition: 0.3s; }
-        .footer-login:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -30,42 +29,41 @@
 
     <div class="form-box">
         <h3 style="margin-top:0; color: var(--blue);">EVENT EINREICHEN</h3>
-        <p style="font-size: 12px; color: #666;">Andere Speditionen können hier ihre Touren vorschlagen.</p>
         <input type="text" id="vName" placeholder="VTC Name">
         <input type="text" id="vDate" placeholder="Datum & Uhrzeit (z.B. 25.05.2026 - 20:00)">
         <input type="text" id="vLink" placeholder="TruckersMP Event Link">
         <textarea id="vMsg" placeholder="Nachricht an das D&T Management" rows="3"></textarea>
-        <button class="btn" onclick="submitEvent()">ANFRAGE ABSCHICKEN</button>
+        <button class="btn" id="submitBtn">ANFRAGE ABSCHICKEN</button>
     </div>
 
-    <div class="footer-login" onclick="adminLogin()">MANAGEMENT ACCESS</div>
+    <div class="footer-login" id="adminTrigger">MANAGEMENT ACCESS</div>
 </div>
 
 <script>
+    // 1. Initialisierung
     const URL = 'https://dihdeuphymaxgxthnjxq.supabase.co';
     const KEY = 'sb_publishable_DOAE2-PtSAC0J2iqFOvfyg_AihL7t74';
     const _supabase = supabase.createClient(URL, KEY);
     let isAdmin = false;
 
+    // 2. Funktionen definieren
     async function loadEvents() {
         const { data, error } = await _supabase.from('dt-event-portal').select('*').order('id', { ascending: false });
         const list = document.getElementById('eventList');
+        if (!list) return;
         list.innerHTML = '';
 
         if(data) {
             data.forEach(ev => {
-                // Besucher sehen nur confirmed, Admins sehen alles
                 if(!isAdmin && !ev.confirmed) return;
-
                 const card = document.createElement('div');
                 card.className = `card ${ev.confirmed ? 'confirmed' : 'pending'}`;
                 card.innerHTML = `
                     <div style="font-size: 10px; font-weight: bold; color:${ev.confirmed ? '#0084ff' : '#f39c12'}">
-                        ${ev.confirmed ? 'TEILNAHME BESTÄTIGT' : 'WARTET AUF PRÜFUNG'}
+                        ${ev.confirmed ? 'TEILNAHME BESTÄTIGT' : 'PRÜFUNG LÄUFT'}
                     </div>
                     <h3 style="margin: 10px 0 5px 0; font-size: 1.1rem;">${ev.vtc_name}</h3>
                     <div style="font-size: 13px; color: #aaa;">📅 ${ev.event_date}</div>
-                    <div style="font-size: 12px; color: #555; margin-top: 5px;">${ev.meesage || ''}</div>
                 `;
 
                 if(isAdmin) {
@@ -95,38 +93,35 @@
 
         if(!vtc || !dat || !lin) return alert("Bitte Name, Datum und Link ausfüllen!");
 
-        // WICHTIG: Deine Spalte heißt laut Screenshot "meesage" (mit Doppel-E)
         const { error } = await _supabase.from('dt-event-portal').insert([
             { vtc_name: vtc, event_date: dat, tmp_link: lin, meesage: msg, confirmed: false }
         ]);
 
-        if (error) {
-            console.error(error);
-            alert("Fehler beim Absenden: " + error.message);
-        } else {
-            alert("Erfolgreich! Wir prüfen deine Anfrage.");
-            location.reload();
-        }
-    }
-
-    function adminLogin() {
-        if(prompt("Management Passwort:") === "DT2026") {
-            isAdmin = true; loadEvents(); alert("Admin-Modus aktiviert!");
-        }
+        if (error) alert("Fehler: " + error.message);
+        else { alert("Erfolgreich eingereicht!"); location.reload(); }
     }
 
     async function updateStatus(id, val) {
-        const { error } = await _supabase.from('dt-event-portal').update({ confirmed: val }).eq('id', id);
-        if(!error) loadEvents();
+        await _supabase.from('dt-event-portal').update({ confirmed: val }).eq('id', id);
+        loadEvents();
     }
 
     async function deleteEvent(id) {
-        if(confirm("Event wirklich löschen?")) {
-            const { error } = await _supabase.from('dt-event-portal').delete().eq('id', id);
-            if(!error) loadEvents();
+        if(confirm("Löschen?")) {
+            await _supabase.from('dt-event-portal').delete().eq('id', id);
+            loadEvents();
         }
     }
 
+    // 3. Event Listener (sicherer als onclick im HTML)
+    document.getElementById('submitBtn').addEventListener('click', submitEvent);
+    document.getElementById('adminTrigger').addEventListener('click', () => {
+        if(prompt("Management Passwort:") === "DT2026") {
+            isAdmin = true; loadEvents(); alert("Admin-Modus aktiv!");
+        }
+    });
+
+    // Start
     loadEvents();
 </script>
 </body>
