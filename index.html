@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T Transporte | Home</title>
+    <title>D&T Transporte | Official Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg-color: #050505; --accent: #ffffff; --border: rgba(255, 255, 255, 0.1); --font-main: 'Inter', sans-serif; --font-heading: 'Syncopate', sans-serif; --highlight: #0084ff; }
@@ -13,17 +13,13 @@
         #cursor-dot, #cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; z-index: 10002; }
         #cursor-dot { width: 6px; height: 6px; background: #fff; }
         #cursor-outline { width: 35px; height: 35px; border: 1px solid rgba(255,255,255,0.5); transition: all 0.3s ease-out; }
-        
         nav { padding: 1.5rem 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(10px); }
-        .logo { font-family: var(--font-heading); font-size: 1.2rem; letter-spacing: 4px; }
+        .logo { font-family: var(--font-heading); font-size: 1.2rem; letter-spacing: 4px; color: #fff; text-decoration: none; }
         .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
         .nav-links a { text-decoration: none; color: #666; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
         .nav-links a:hover { color: #fff; }
-        .nav-links .social-icon { color: var(--highlight); font-weight: bold; }
-
         .hero { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .hero h1 { font-family: var(--font-heading); font-size: clamp(2rem, 10vw, 5rem); margin-bottom: 2rem; line-height: 1.1; }
-        
         .nav-box { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
         .btn { padding: 1.2rem 2.5rem; border: 1px solid #fff; color: #fff; text-decoration: none; font-family: var(--font-heading); font-size: 0.65rem; letter-spacing: 2px; transition: 0.4s; }
         .btn:hover { background: #fff; color: #000; }
@@ -33,24 +29,21 @@
 </head>
 <body>
     <div id="cursor-dot"></div><div id="cursor-outline"></div>
-
     <nav>
-        <div class="logo">D&T</div>
+        <a href="index.html" class="logo">D&T TRANSPORTE</a>
         <ul class="nav-links">
-            <li><a href="regeln.html">Regeln</a></li>
-            <li><a href="https://discord.gg/QKquEtXhW5" target="_blank" class="social-icon">Discord</a></li>
-            <li><a href="https://truckersmp.com/vtc/85915" target="_blank" class="social-icon">TruckersMP</a></li>
+            <li><a href="regeln.html">Regelwerk</a></li>
+            <li><a href="https://discord.gg/QKquEtXhW5" target="_blank">Discord</a></li>
+            <li><a href="https://truckersmp.com/vtc/85915" target="_blank">TruckersMP</a></li>
         </ul>
     </nav>
-
     <div class="hero">
         <h1>BEYOND<br>LOGISTICS</h1>
         <div class="nav-box">
             <a href="event.html" class="btn">EVENTS</a>
-            <a href="bewerbung.html" class="btn btn-blue">JETZT BEWERBEN</a>
+            <a href="bewerbung.html" class="btn btn-blue">BEWERBEN</a>
         </div>
     </div>
-
     <script>
         const dot = document.getElementById('cursor-dot'); const outline = document.getElementById('cursor-outline');
         window.addEventListener('mousemove', (e) => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; outline.animate({ left: e.clientX + 'px', top: e.clientY + 'px' }, { duration: 500, fill: "forwards" }); });
