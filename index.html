@@ -3,234 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T Transporte | VTC</title>
+    <title>D&T Transporte | Virtual Trucking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* BASIS STYLES */
         :root {
-            --bg-color: #0a0a0a;
-            --text-color: #ffffff;
-            --accent-color: #f0f0f0;
-            --input-bg: #1a1a1a;
-            --border-color: #333333;
+            --bg-color: #050505;
+            --card-bg: rgba(20, 20, 20, 0.6);
+            --accent: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Syncopate', sans-serif;
+        }
+
+        /* GRAIN OVERLAY FÜR TEXTUR */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 10000;
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            cursor: none; 
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: var(--font-main);
+            cursor: none;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            color: #fff;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* SCROLL PROGRESS BAR */
+        /* SCROLL BAR */
         #progress-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: transparent;
-            z-index: 10001;
+            position: fixed; top: 0; left: 0; width: 100%; height: 4px;
+            background: rgba(255,255,255,0.05); z-index: 10001;
         }
-
         #progress-bar {
-            height: 100%;
-            background: white;
-            width: 0%; 
-            transition: width 0.1s ease-out;
+            height: 100%; background: var(--accent); width: 0%;
+            box-shadow: 0 0 15px var(--accent);
         }
 
-        /* CUSTOM CURSOR */
-        #cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: white;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            border-radius: 50%;
+        /* CURSOR */
+        #cursor-dot, #cursor-outline {
+            position: fixed; top: 0; left: 0;
             transform: translate(-50%, -50%);
+            border-radius: 50%; pointer-events: none; z-index: 10002;
         }
-
+        #cursor-dot { width: 6px; height: 6px; background: #fff; }
         #cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: transform 0.15s ease-out, background 0.3s ease;
+            width: 35px; height: 35px; border: 1px solid rgba(255,255,255,0.5);
+            transition: width 0.3s, height 0.3s, background 0.3s, border 0.3s;
         }
 
         /* NAVIGATION */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 10%;
-            border-bottom: 1px solid var(--border-color);
-            background: var(--bg-color);
+            padding: 1.5rem 8%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 999;
+            border-bottom: 1px solid var(--border);
         }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 2px;
+        .logo { font-family: var(--font-heading); font-size: 1.2rem; letter-spacing: 4px; }
+        nav ul { display: flex; list-style: none; gap: 2.5rem; }
+        nav ul a {
+            text-decoration: none; color: #888; text-transform: uppercase;
+            font-size: 0.75rem; letter-spacing: 2px; transition: 0.4s;
         }
+        nav ul a:hover { color: #fff; }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li { margin-left: 2rem; }
-
-        nav ul li a {
-            color: var(--text-color);
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        nav ul li a:hover { opacity: 0.5; }
-
-        /* SEKTIONEN */
-        section { padding: 5rem 10%; }
+        /* HERO */
+        section { padding: 8rem 10%; opacity: 0; transform: translateY(30px); transition: 1s all ease-out; }
+        section.visible { opacity: 1; transform: translateY(0); }
 
         .hero {
-            height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            height: 85vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 10vw, 4.5rem);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to bottom, #fff 0%, #444 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 1rem; letter-spacing: 5px; }
-
+        /* BUTTONS */
         .btn {
-            padding: 1rem 2.5rem;
-            background: white;
-            color: black;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 2rem;
-            display: inline-block;
-            transition: 0.3s;
-            border: 1px solid white;
-            text-transform: uppercase;
+            padding: 1.2rem 3rem; background: #fff; color: #000;
+            text-decoration: none; font-weight: bold; text-transform: uppercase;
+            letter-spacing: 2px; font-size: 0.8rem; border-radius: 0;
+            transition: 0.4s; border: 1px solid #fff;
         }
+        .btn:hover { background: transparent; color: #fff; }
 
-        .btn:hover {
-            background: transparent;
-            color: white;
-        }
-
-        /* ABRECHNUNGSSYSTEME */
-        .system-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 30px;
-        }
-
+        /* GRID & CARDS */
+        .system-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 4rem; }
         .system-card {
-            border: 1px solid var(--border-color);
-            padding: 50px 20px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            transition: all 0.4s ease;
-            display: block;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            padding: 4rem 2rem; text-align: center;
+            text-decoration: none; color: #fff;
+            transition: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-
         .system-card:hover {
-            background: white;
-            color: black;
-            border-color: white;
-            transform: translateY(-5px);
+            border-color: #fff; background: rgba(255,255,255,0.05);
+            transform: translateY(-10px);
         }
+        .system-card h3 { font-family: var(--font-heading); margin-bottom: 10px; font-size: 1.5rem; }
 
-        .system-card span {
-            display: block;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            margin-top: 10px;
-            opacity: 0.6;
-        }
-
-        /* FORMULAR */
+        /* FORM */
         .form-container {
-            background: var(--input-bg);
-            padding: 2.5rem;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            padding: 3.5rem; border: 1px solid var(--border);
         }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-group { display: flex; flex-direction: column; }
-
-        label { font-size: 0.75rem; margin-bottom: 5px; color: #888; text-transform: uppercase; }
-
         input, select, textarea {
-            background: #222;
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            color: white;
-            outline: none;
+            width: 100%; background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border); padding: 1rem;
+            color: #fff; margin-top: 0.5rem; transition: 0.3s;
         }
-
-        input:focus, textarea:focus { border-color: #888; }
-
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; }
-
-        .checkbox-item { display: flex; align-items: center; font-size: 0.85rem; }
-
-        .checkbox-item input { margin-right: 8px; width: auto; }
+        input:focus { border-color: #fff; outline: none; background: rgba(255,255,255,0.08); }
 
         .submit-btn {
-            width: 100%;
-            background: white;
-            color: black;
-            border: none;
-            padding: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
+            width: 100%; padding: 1.5rem; background: #fff; color: #000;
+            border: none; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 2px; margin-top: 2rem; transition: 0.4s;
         }
-
         .submit-btn:hover { background: #ccc; }
 
-        footer {
-            text-align: center;
-            padding: 4rem;
-            border-top: 1px solid var(--border-color);
-            opacity: 0.6;
-            font-size: 0.8rem;
-        }
+        footer { padding: 5rem; text-align: center; border-top: 1px solid var(--border); color: #444; }
 
         @media (max-width: 768px) {
             .system-grid { grid-template-columns: 1fr; }
@@ -240,144 +150,116 @@
 </head>
 <body>
 
-    <div id="progress-container">
-        <div id="progress-bar"></div>
-    </div>
-
+    <div id="progress-container"><div id="progress-bar"></div></div>
     <div id="cursor-dot"></div>
     <div id="cursor-outline"></div>
 
     <nav>
-        <div class="logo">D&T TRANSPORTE</div>
+        <div class="logo">D&T</div>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#system">Abrechnung</a></li>
-            <li><a href="#events">Events</a></li>
-            <li><a href="#apply">Bewerben</a></li>
+            <li><a href="#home">Start</a></li>
+            <li><a href="#system">VTC Hubs</a></li>
+            <li><a href="#apply">Join Us</a></li>
         </ul>
     </nav>
 
     <section id="home" class="hero">
-        <h1>D&T TRANSPORTE</h1>
-        <p>Präzision auf jeder Meile. Werde Teil unserer Flotte.</p>
-        <div>
+        <h1>PRECISION<br>TRANSPORT</h1>
+        <p style="letter-spacing: 5px; color: #666; text-transform: uppercase; font-size: 0.8rem;">Every Mile Matters</p>
+        <div style="margin-top: 3rem;">
             <a href="https://truckersmp.com/vtc/85915" class="btn" target="_blank">TruckersMP</a>
-            <a href="https://discord.gg/QKquEtXhW5" class="btn" style="background:transparent; color:white; margin-left: 10px;" target="_blank">Discord</a>
+            <a href="https://discord.gg/QKquEtXhW5" class="btn" style="background:transparent; color:#fff; margin-left:15px;" target="_blank">Discord</a>
         </div>
     </section>
 
     <section id="system">
-        <h2 style="text-align: center; margin-bottom: 1rem;">Unsere Abrechnungssysteme</h2>
-        <p style="text-align: center; opacity: 0.6; margin-bottom: 3rem;">Klicke auf ein System, um zu unserem Profil zu gelangen.</p>
+        <h2 style="font-family: var(--font-heading); text-align: center;">LOGISTIK-SYSTEME</h2>
         <div class="system-grid">
             <a href="https://trucksbook.eu/company/219079" class="system-card" target="_blank">
-                TrucksBook
-                <span>Zum Firmenprofil wechseln &rarr;</span>
+                <h3>TrucksBook</h3>
+                <p style="opacity: 0.5; font-size: 0.8rem;">Real-time Telemetry Tracking</p>
             </a>
             <a href="https://hub.truckyapp.com/vtc/dt-transporte" class="system-card" target="_blank">
-                Trucky
-                <span>Zum VTC-Hub wechseln &rarr;</span>
+                <h3>Trucky</h3>
+                <p style="opacity: 0.5; font-size: 0.8rem;">Advanced Fleet Management</p>
             </a>
         </div>
     </section>
 
-    <section id="events" style="border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; text-align: center;">
-        <h2 style="margin-bottom: 1rem;">Events</h2>
-        <p>Unsere aktuellen Konvoi-Termine findest du immer aktuell auf unserem Discord-Server oder direkt bei TruckersMP.</p>
-    </section>
-
     <section id="apply">
-        <h2 style="margin-bottom: 2rem;">Bewerbungsformular</h2>
+        <h2 style="font-family: var(--font-heading); margin-bottom: 3rem;">APPLICATION</h2>
         <div class="form-container">
             <form action="https://formspree.io/f/xdakqdqd" method="POST">
-                
-                <div class="form-grid">
-                    <div class="form-group"><label>Name *</label><input type="text" name="name" required></div>
-                    <div class="form-group"><label>Alter *</label><input type="number" name="alter" required></div>
-                    <div class="form-group"><label>E-Mail *</label><input type="email" name="email" required></div>
-                    <div class="form-group">
-                        <label>Nationalität *</label>
-                        <select name="nationalitaet">
-                            <option>Deutschland</option>
-                            <option>Österreich</option>
-                            <option>Schweiz</option>
-                            <option>Andere</option>
-                        </select>
-                    </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div><label style="font-size: 0.7rem; color: #555;">NAME</label><input type="text" name="name" required></div>
+                    <div><label style="font-size: 0.7rem; color: #555;">ALTER</label><input type="number" name="alter" required></div>
                 </div>
-
-                <div class="form-grid">
-                    <div class="form-group"><label>Steam-Name / ID *</label><input type="text" name="steam_id" required></div>
-                    <div class="form-group"><label>TruckersMP Link *</label><input type="text" name="tmp_link" required></div>
-                    <div class="form-group"><label>Discord-ID</label><input type="text" name="discord_id"></div>
+                <div style="margin-top: 20px;">
+                    <label style="font-size: 0.7rem; color: #555;">EMAIL ADDRESS</label>
+                    <input type="email" name="email" required>
                 </div>
-
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Besessene Spiele *</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item"><input type="checkbox" name="ets2"> Euro Truck Simulator 2</label>
-                        <label class="checkbox-item"><input type="checkbox" name="ats"> American Truck Simulator</label>
-                    </div>
+                <div style="margin-top: 20px;">
+                    <label style="font-size: 0.7rem; color: #555;">DEINE STORY</label>
+                    <textarea name="message" rows="5" placeholder="Erzähl uns von deiner Erfahrung..."></textarea>
                 </div>
-
-                <div class="form-group">
-                    <label>Dein Bewerbungstext *</label>
-                    <textarea name="message" rows="5" required placeholder="Erzähl uns etwas über dich..."></textarea>
-                </div>
-
-                <button type="submit" class="submit-btn">Bewerbung absenden</button>
+                <button type="submit" class="submit-btn">SEND REQUEST</button>
             </form>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 D&T Transporte | Design: Minimalist Black</p>
+        <p>&copy; 2026 D&T TRANSPORTE | DESIGN: REVOLUTION 2.0</p>
     </footer>
 
     <script>
-        // SCROLL PROGRESS SCRIPT
-        window.onscroll = function() { updateProgressBar() };
+        // REVEAL ON SCROLL
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, observerOptions);
 
-        function updateProgressBar() {
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+
+        // PROGRESS BAR
+        window.onscroll = () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             document.getElementById("progress-bar").style.width = scrolled + "%";
-        }
+        };
 
-        // MAGNETIC CURSOR SCRIPT
+        // SMOOTH CURSOR
         const dot = document.getElementById('cursor-dot');
         const outline = document.getElementById('cursor-outline');
 
         window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            // Dot folgt direkt
-            dot.style.left = `${posX}px`;
-            dot.style.top = `${posY}px`;
-
-            // Outline folgt verzögert (animiert)
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+            
             outline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
+                left: e.clientX + 'px',
+                top: e.clientY + 'px'
+            }, { duration: 400, fill: "forwards" });
         });
 
-        // Hover Effect für Interaktionen
-        const interactables = document.querySelectorAll('a, button, input, select, textarea, .system-card, .checkbox-item');
+        // HOVER EFFECTS
+        const interactables = document.querySelectorAll('a, button, .system-card, input, textarea');
         interactables.forEach(el => {
             el.addEventListener('mouseenter', () => {
-                outline.style.transform = 'translate(-50%, -50%) scale(2)';
+                outline.style.width = '60px';
+                outline.style.height = '60px';
                 outline.style.background = 'rgba(255,255,255,0.1)';
+                outline.style.borderColor = 'transparent';
             });
             el.addEventListener('mouseleave', () => {
-                outline.style.transform = 'translate(-50%, -50%) scale(1)';
+                outline.style.width = '35px';
+                outline.style.height = '35px';
                 outline.style.background = 'transparent';
+                outline.style.borderColor = 'rgba(255,255,255,0.5)';
             });
         });
     </script>
-
-    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
