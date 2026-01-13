@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&T | Event Hub & Management</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -16,14 +17,14 @@
         input, textarea { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; margin: 10px 0; box-sizing: border-box; }
         .btn { background: var(--blue); border: none; padding: 15px; width: 100%; font-weight: bold; cursor: pointer; color: #fff; transition: 0.3s; }
         .btn:hover { background: #fff; color: #000; }
-        .admin-btn { padding: 8px 12px; font-size: 10px; cursor: pointer; color: white; border: none; margin-top: 15px; margin-right: 10px; border-radius: 2px; font-weight: bold; }
-        .footer-login { text-align: left; margin-top: 80px; opacity: 0.1; cursor: pointer; font-size: 10px; transition: 0.3s; }
+        .admin-btn { padding: 8px 12px; font-size: 10px; cursor: pointer; color: white; border: none; margin-top: 15px; margin-right: 10px; border-radius: 2px; }
+        .footer-login { text-align: left; margin-top: 80px; opacity: 0.1; cursor: pointer; font-size: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1 style="text-align: center; letter-spacing: 5px; font-family: sans-serif;">EVENT ZENTRALE</h1>
+    <h1 style="text-align: center; letter-spacing: 5px;">EVENT ZENTRALE</h1>
 
     <div class="grid" id="eventList"></div>
 
@@ -32,7 +33,7 @@
         <input type="text" id="vName" placeholder="VTC Name">
         <input type="text" id="vDate" placeholder="Datum & Uhrzeit (z.B. 25.05.2026 - 20:00)">
         <input type="text" id="vLink" placeholder="TruckersMP Event Link">
-        <textarea id="vMsg" placeholder="Nachricht an das D&T Management" rows="3"></textarea>
+        <textarea id="vMsg" placeholder="Nachricht an das Management" rows="3"></textarea>
         <button class="btn" id="submitBtn">ANFRAGE ABSCHICKEN</button>
     </div>
 
@@ -40,67 +41,88 @@
 </div>
 
 <script>
-    // 1. Initialisierung
-    const URL = 'https://dihdeuphymaxgxthnjxq.supabase.co';
-    const KEY = 'sb_publishable_DOAE2-PtSAC0J2iqFOvfyg_AihL7t74';
-    const _supabase = supabase.createClient(URL, KEY);
+    // 1. Verbindung herstellen (Sauber formatiert ohne Leerzeichen)
+    const supabaseUrl = 'https://dihdeuphymaxgxthnjxq.supabase.co';
+    const supabaseKey = 'sb_publishable_DOAE2-PtSAC0J2iqFOvfyg_AihL7t74';
+    const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
     let isAdmin = false;
 
-    // 2. Funktionen definieren
+    // 2. Events laden
     async function loadEvents() {
-        const { data, error } = await _supabase.from('dt-event-portal').select('*').order('id', { ascending: false });
+        const { data, error } = await _supabase
+            .from('dt-event-portal')
+            .select('*')
+            .order('id', { ascending: false });
+
+        if (error) {
+            console.error("Ladefehler:", error);
+            return;
+        }
+
         const list = document.getElementById('eventList');
-        if (!list) return;
         list.innerHTML = '';
 
-        if(data) {
-            data.forEach(ev => {
-                if(!isAdmin && !ev.confirmed) return;
-                const card = document.createElement('div');
-                card.className = `card ${ev.confirmed ? 'confirmed' : 'pending'}`;
-                card.innerHTML = `
-                    <div style="font-size: 10px; font-weight: bold; color:${ev.confirmed ? '#0084ff' : '#f39c12'}">
-                        ${ev.confirmed ? 'TEILNAHME BESTÄTIGT' : 'PRÜFUNG LÄUFT'}
-                    </div>
-                    <h3 style="margin: 10px 0 5px 0; font-size: 1.1rem;">${ev.vtc_name}</h3>
-                    <div style="font-size: 13px; color: #aaa;">📅 ${ev.event_date}</div>
-                `;
+        data.forEach(ev => {
+            if(!isAdmin && !ev.confirmed) return;
 
-                if(isAdmin) {
-                    const btnBox = document.createElement('div');
-                    if(!ev.confirmed) {
-                        const ok = document.createElement('button');
-                        ok.innerText = "FREIGEBEN"; ok.className = "admin-btn"; ok.style.background = "#27ae60";
-                        ok.onclick = () => updateStatus(ev.id, true);
-                        btnBox.appendChild(ok);
-                    }
-                    const del = document.createElement('button');
-                    del.innerText = "LÖSCHEN"; del.className = "admin-btn"; del.style.background = "#c0392b";
-                    del.onclick = () => deleteEvent(ev.id);
-                    btnBox.appendChild(del);
-                    card.appendChild(btnBox);
+            const card = document.createElement('div');
+            card.className = `card ${ev.confirmed ? 'confirmed' : 'pending'}`;
+            card.innerHTML = `
+                <div style="font-size: 10px; font-weight: bold; color:${ev.confirmed ? '#0084ff' : '#f39c12'}">
+                    ${ev.confirmed ? 'BESTÄTIGT' : 'PRÜFUNG LÄUFT'}
+                </div>
+                <h3 style="margin: 10px 0 5px 0;">${ev.vtc_name}</h3>
+                <div style="font-size: 13px; color: #aaa;">📅 ${ev.event_date}</div>
+            `;
+
+            if(isAdmin) {
+                const btnBox = document.createElement('div');
+                if(!ev.confirmed) {
+                    const ok = document.createElement('button');
+                    ok.innerText = "FREIGEBEN"; ok.className = "admin-btn"; ok.style.background = "#27ae60";
+                    ok.onclick = () => updateStatus(ev.id, true);
+                    btnBox.appendChild(ok);
                 }
-                list.appendChild(card);
-            });
-        }
+                const del = document.createElement('button');
+                del.innerText = "LÖSCHEN"; del.className = "admin-btn"; del.style.background = "#c0392b";
+                del.onclick = () => deleteEvent(ev.id);
+                btnBox.appendChild(del);
+                card.appendChild(btnBox);
+            }
+            list.appendChild(card);
+        });
     }
 
+    // 3. Event absenden
     async function submitEvent() {
         const vtc = document.getElementById('vName').value;
         const dat = document.getElementById('vDate').value;
         const lin = document.getElementById('vLink').value;
         const msg = document.getElementById('vMsg').value;
 
-        if(!vtc || !dat || !lin) return alert("Bitte Name, Datum und Link ausfüllen!");
+        if(!vtc || !dat || !lin) return alert("Bitte alle Felder ausfüllen!");
 
-        const { error } = await _supabase.from('dt-event-portal').insert([
-            { vtc_name: vtc, event_date: dat, tmp_link: lin, meesage: msg, confirmed: false }
-        ]);
+        // Wichtig: 'meesage' wird hier so geschrieben wie in deiner Tabelle
+        const { error } = await _supabase
+            .from('dt-event-portal')
+            .insert([{ 
+                vtc_name: vtc, 
+                event_date: dat, 
+                tmp_link: lin, 
+                meesage: msg, 
+                confirmed: false 
+            }]);
 
-        if (error) alert("Fehler: " + error.message);
-        else { alert("Erfolgreich eingereicht!"); location.reload(); }
+        if (error) {
+            alert("Fehler: " + error.message);
+        } else {
+            alert("Erfolgreich eingereicht!");
+            location.reload();
+        }
     }
 
+    // Admin Funktionen
     async function updateStatus(id, val) {
         await _supabase.from('dt-event-portal').update({ confirmed: val }).eq('id', id);
         loadEvents();
@@ -113,15 +135,17 @@
         }
     }
 
-    // 3. Event Listener (sicherer als onclick im HTML)
+    // Event-Listener
     document.getElementById('submitBtn').addEventListener('click', submitEvent);
     document.getElementById('adminTrigger').addEventListener('click', () => {
-        if(prompt("Management Passwort:") === "DT2026") {
-            isAdmin = true; loadEvents(); alert("Admin-Modus aktiv!");
+        if(prompt("Passwort:") === "DT2026") {
+            isAdmin = true;
+            loadEvents();
+            alert("Admin-Modus aktiv.");
         }
     });
 
-    // Start
+    // Initialer Start
     loadEvents();
 </script>
 </body>
