@@ -3,73 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T | Regelwerk</title>
+    <title>D&T | Codex</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --blue: #0084ff;
-            --bg-gradient: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%);
-            --glass: rgba(255, 255, 255, 0.05);
+        :root { 
+            --bg: #000000;
+            --surface: #0a0a0a;
+            --text: #ffffff;
             --border: rgba(255, 255, 255, 0.1);
+            --holo: linear-gradient(135deg, #fff 0%, #00ffff 25%, #ff00ff 50%, #ffff00 75%, #fff 100%);
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-gradient);
-            color: #fff;
+        body { 
+            margin: 0; 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg);
+            color: var(--text); 
             min-height: 100vh;
             overflow-x: hidden;
+            cursor: crosshair;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 50px 20px;
+        /* Gitter Hintergrund */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
         }
 
-        h1 {
-            text-align: center;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            font-weight: 200;
-            margin-bottom: 60px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 2.5rem;
+        /* Holo-Animation */
+        @keyframes holo-move {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* Glassmorphism Rule Cards */
+        .holo-text {
+            background: var(--holo);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: holo-move 8s ease infinite;
+        }
+
+        /* Navigation */
+        nav { 
+            display: flex; 
+            justify-content: center; 
+            gap: 30px; 
+            padding: 30px; 
+            border-bottom: 1px solid var(--border);
+            font-family: 'Barlow Condensed';
+            letter-spacing: 2px;
+        }
+        nav a { color: #666; text-decoration: none; font-weight: 700; text-transform: uppercase; transition: 0.3s; }
+        nav a:hover, nav a.active { color: #fff; }
+
+        .container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+
+        header { text-align: center; margin-bottom: 80px; }
+        header h1 { 
+            font-family: 'Barlow Condensed'; 
+            font-size: 4rem; 
+            text-transform: uppercase; 
+            margin: 0;
+            line-height: 0.8;
+        }
+
+        /* Rule Sections */
         .rule-section {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: #050505;
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            
-            /* Scroll Animation Start State */
+            padding: 40px;
+            margin-bottom: 40px;
+            position: relative;
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s ease-out;
         }
 
-        /* Wenn sichtbar durch Scrollen */
         .rule-section.reveal {
             opacity: 1;
             transform: translateY(0);
         }
 
+        .rule-section::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:2px;
+            background: var(--holo); background-size: 400%; opacity: 0.3;
+        }
+
         .rule-section h2 {
-            color: var(--blue);
+            font-family: 'Barlow Condensed';
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             margin-top: 0;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 15px;
-            font-size: 1.5rem;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .rule-list {
@@ -79,52 +116,84 @@
         }
 
         .rule-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.02);
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
             line-height: 1.6;
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-            color: #ccc;
+            gap: 15px;
+            color: #888;
+            font-size: 0.95rem;
+            transition: 0.3s;
         }
 
-        .rule-list li:last-child {
-            border-bottom: none;
-        }
+        .rule-list li:hover { color: #fff; }
 
         .rule-list li::before {
-            content: "➤";
-            color: var(--blue);
+            content: "—";
+            color: #fff;
             font-weight: bold;
-            font-size: 12px;
-            margin-top: 5px;
+        }
+
+        .rule-list li:last-child { border-bottom: none; }
+
+        .footer-nav {
+            text-align: center;
+            margin-top: 60px;
+            padding-bottom: 100px;
         }
 
         .btn-back {
-            display: inline-block;
-            margin-top: 40px;
+            font-family: 'Barlow Condensed';
             text-decoration: none;
             color: #fff;
-            border: 1px solid var(--border);
-            padding: 10px 20px;
-            border-radius: 50px;
-            transition: 0.3s;
-            background: rgba(0,0,0,0.3);
+            border: 1px solid #fff;
+            padding: 15px 40px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 900;
+            transition: 0.4s;
+            background: transparent;
+            display: inline-block;
         }
 
         .btn-back:hover {
-            background: var(--blue);
-            border-color: var(--blue);
+            background: #fff;
+            color: #000;
+        }
+
+        #cursor-glow {
+            position: fixed; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            pointer-events: none; transform: translate(-50%, -50%); z-index: 9999;
+        }
+
+        @media(max-width: 750px) {
+            header h1 { font-size: 2.5rem; }
+            .rule-section { padding: 25px; }
         }
     </style>
 </head>
 <body>
 
+<div id="cursor-glow"></div>
+<div class="grid-bg"></div>
+
+<nav>
+    <a href="index.html">Hub</a>
+    <a href="bewerbung.html">Bewerbung</a>
+    <a href="event.html">Events</a>
+    <a href="regeln.html" class="active">Codex</a>
+</nav>
+
 <div class="container">
-    <h1>Unser Regelwerk</h1>
+    <header>
+        <div style="color: #444; font-family: 'Barlow Condensed'; letter-spacing: 5px; margin-bottom: 10px; font-weight: 700;">REGULATORY STATUTES</div>
+        <h1>Company <span class="holo-text">Codex</span></h1>
+    </header>
 
     <div class="rule-section">
-        <h2>👮 §1 Allgemeines Verhalten</h2>
+        <h2>§1 Allgemeines Verhalten</h2>
         <ul class="rule-list">
             <li>Ein respektvoller Umgangston ist oberstes Gebot. Beleidigungen, Rassismus oder Diskriminierung führen zum sofortigen Ausschluss.</li>
             <li>Wir repräsentieren die Spedition "D&T Transporte". Verhalte dich dementsprechend professionell, sowohl In-Game als auch auf Discord.</li>
@@ -134,38 +203,38 @@
     </div>
 
     <div class="rule-section">
-        <h2>🚛 §2 Verhalten in TruckersMP</h2>
+        <h2>§2 Verhalten in TruckersMP</h2>
         <ul class="rule-list">
-            <li>Die offiziellen TruckersMP-Regeln sind jederzeit einzuhalten. Ein Bann in TruckersMP kann zum Ausschluss aus der Spedition führen.</li>
-            <li>Vorsätzliches Rammen, Blockieren (Blocking) oder rücksichtsloses Fahren (Reckless Driving) ist untersagt.</li>
+            <li>Die offiziellen TruckersMP-Regeln sind jederzeit einzuhalten. Ein Bann in TruckersMP kann zum Ausschluss führen.</li>
+            <li>Vorsätzliches Rammen, Blockieren oder rücksichtsloses Fahren ist untersagt.</li>
             <li>Fahre vorausschauend. Wir wollen Simulation, kein Need for Speed.</li>
             <li>Bei Events oder Konvois ist auf den Event-Staff zu hören.</li>
         </ul>
     </div>
 
     <div class="rule-section">
-        <h2>🚧 §3 Konvoiregeln</h2>
+        <h2>§3 Konvoiregeln</h2>
         <ul class="rule-list">
-            <li>Es herrscht Anwesenheitspflicht im Discord-Voice während des Konvois (Zuhören ist Pflicht, Sprechen optional).</li>
+            <li>Es herrscht Anwesenheitspflicht im Discord-Voice während des Konvois.</li>
             <li>Der Sicherheitsabstand beträgt mindestens 50-100 Meter. Bei Lags ist der Abstand zu vergrößern.</li>
-            <li>Überholen ist während eines Konvois grundsätzlich verboten, es sei denn, die Konvoileitung gibt die Freigabe.</li>
-            <li>Der Firmen-Lackierung (Paintjob) ist bei offiziellen Konvois Pflicht.</li>
-            <li>Wer den Konvoi verlassen muss, kündigt dies kurz an und fährt sicher an den Straßenrand oder nutzt F7.</li>
+            <li>Überholen ist während eines Konvois grundsätzlich verboten, es sei denn, die Leitung gibt die Freigabe.</li>
+            <li>Die Firmen-Lackierung ist bei offiziellen Konvois Pflicht.</li>
+            <li>Abmeldungen während des Konvois müssen kurz angekündigt werden.</li>
         </ul>
     </div>
 
     <div class="rule-section">
-        <h2>📈 §4 Aktivität & Anforderungen</h2>
+        <h2>§4 Aktivität & Anforderungen</h2>
         <ul class="rule-list">
-            <li>Wir erwarten eine gewisse Grundaktivität. Längere Abwesenheiten (Urlaub, Krankheit) sind im Abwesenheitskanal zu melden.</li>
-            <li>Das Mindestalter für den Beitritt beträgt 16 Jahre (Ausnahmen durch die Geschäftsführung möglich).</li>
-            <li>Das Nutzen unseres Fahrer-Tags "D&T Transporte" im Tab-Menü ist erwünscht (Farbe: Blau).</li>
+            <li>Wir erwarten eine Grundaktivität. Längere Abwesenheiten sind im Abwesenheitskanal zu melden.</li>
+            <li>Das Mindestalter für den Beitritt beträgt 16 Jahre.</li>
+            <li>Das Nutzen unseres Fahrer-Tags "D&T Transporte" im Tab-Menü ist erwünscht.</li>
             <li>Profilbilder und Namen sollten angemessen sein.</li>
         </ul>
     </div>
 
     <div class="rule-section">
-        <h2>🔒 §5 Schlussbestimmungen</h2>
+        <h2>§5 Schlussbestimmungen</h2>
         <ul class="rule-list">
             <li>Die Speditionsleitung behält sich das Recht vor, das Regelwerk jederzeit anzupassen.</li>
             <li>Unwissenheit schützt vor Strafe nicht.</li>
@@ -173,13 +242,20 @@
         </ul>
     </div>
 
-    <center>
-        <a href="index.html" class="btn-back">← Zurück zur Startseite</a>
-    </center>
+    <div class="footer-nav">
+        <a href="index.html" class="btn-back">Back to Hub</a>
+    </div>
 </div>
 
 <script>
-    // Scroll Animation Logik (Identisch zu den anderen Seiten für Konsistenz)
+    // Maus-Glow Effekt
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+    });
+
+    // Scroll Animation Logik
     document.addEventListener("DOMContentLoaded", function() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -188,7 +264,7 @@
                 }
             });
         }, {
-            threshold: 0.15 // Element muss 15% sichtbar sein
+            threshold: 0.1
         });
 
         const sections = document.querySelectorAll('.rule-section');
