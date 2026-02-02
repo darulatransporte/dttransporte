@@ -3,209 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T Transporte | Logistics Hub</title>
+    <title>D&T Transporte | Holo Edition</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --accent: #ff8c00; /* Safety Orange */
-            --bg: #0f0f0f;
-            --surface: #1a1a1a;
+            --bg: #000000;
+            --surface: #0a0a0a;
             --text: #ffffff;
-            --border: #333;
+            --border: rgba(255, 255, 255, 0.1);
+            --holo: linear-gradient(135deg, #fff 0%, #00ffff 25%, #ff00ff 50%, #ffff00 75%, #fff 100%);
         }
 
         body { 
             margin: 0; 
             font-family: 'Inter', sans-serif; 
             background-color: var(--bg);
-            background-image: 
-                linear-gradient(rgba(255, 140, 0, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 140, 0, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
             color: var(--text); 
             min-height: 100vh;
+            overflow-x: hidden;
+            cursor: crosshair; /* Stylisher Mauszeiger */
         }
 
-        /* Industrial Header */
+        /* Hintergrund Gitter */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        /* Holo-Animation */
+        @keyframes holo-move {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .holo-text {
+            background: var(--holo);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: holo-move 8s ease infinite;
+        }
+
+        /* Header */
         .hero {
-            border-bottom: 4px solid var(--accent);
-            padding: 80px 20px;
-            background: linear-gradient(45deg, #000 0%, #151515 100%);
+            padding: 100px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
             position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: "LOGISTICS";
-            position: absolute;
-            bottom: -20px;
-            right: -20px;
-            font-family: 'Barlow Condensed';
-            font-size: 15rem;
-            font-weight: 900;
-            color: rgba(255,255,255,0.03);
-            pointer-events: none;
         }
 
         h1 { 
             font-family: 'Barlow Condensed', sans-serif;
-            font-size: clamp(3rem, 10vw, 5rem); 
+            font-size: clamp(3.5rem, 12vw, 7rem); 
             font-weight: 900;
             margin: 0;
-            line-height: 0.9;
             text-transform: uppercase;
+            letter-spacing: -2px;
+            line-height: 0.8;
         }
 
-        .highlight { color: var(--accent); }
+        .subtitle {
+            font-family: 'Barlow Condensed';
+            letter-spacing: 5px;
+            color: #666;
+            margin-top: 10px;
+            font-weight: 700;
+        }
 
         .social-bar {
-            margin-top: 30px;
+            margin-top: 40px;
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
         }
 
         .btn {
-            text-transform: uppercase;
-            font-weight: 700;
-            padding: 12px 24px;
+            padding: 15px 35px;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.2s;
-            border: 2px solid;
+            text-transform: uppercase;
             font-family: 'Barlow Condensed';
-            letter-spacing: 1px;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: #fff;
-            border-color: #fff;
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            background: black;
+            color: white;
+            border: 1px solid white;
+            transition: 0.4s;
+            overflow: hidden;
         }
 
         .btn:hover {
-            transform: skewX(-5deg);
-            filter: brightness(1.2);
+            color: black;
+            border-color: transparent;
         }
 
-        /* Main Grid Navigation */
-        .main-content {
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: var(--holo);
+            background-size: 400% 400%;
+            transition: 0.4s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 0;
+            animation: holo-move 3s linear infinite;
+        }
+
+        /* Main Content */
+        .container {
             max-width: 1200px;
-            margin: -40px auto 60px;
+            margin: 60px auto;
             padding: 0 20px;
             display: grid;
             grid-template-columns: 1fr 350px;
-            gap: 30px;
+            gap: 40px;
         }
 
         .nav-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
         }
 
         .nav-box {
-            background: var(--surface);
+            background: #000;
             border: 1px solid var(--border);
-            padding: 40px 20px;
+            padding: 50px 30px;
+            text-align: left;
             text-decoration: none;
-            color: #fff;
+            color: white;
             position: relative;
+            transition: 0.3s;
+            overflow: hidden;
+        }
+
+        .nav-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--holo);
+            background-size: 400% 400%;
+            opacity: 0;
             transition: 0.3s;
         }
 
-        .nav-box::after {
-            content: '';
-            position: absolute;
-            bottom: 0; right: 0;
-            width: 0; height: 0;
-            border-style: solid;
-            border-width: 0 0 20px 20px;
-            border-color: transparent transparent var(--border) transparent;
-        }
-
         .nav-box:hover {
-            background: #252525;
-            border-color: var(--accent);
+            background: #050505;
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-5px);
         }
 
-        .nav-box i { font-size: 2rem; color: var(--accent); margin-bottom: 20px; display: block; }
-        .nav-box span { font-family: 'Barlow Condensed'; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; }
+        .nav-box:hover::before {
+            opacity: 1;
+            animation: holo-move 3s linear infinite;
+        }
 
-        /* Manifest / Event Styling */
+        .nav-box i { font-size: 1.5rem; margin-bottom: 20px; display: block; color: #fff; }
+        .nav-box span { font-family: 'Barlow Condensed'; font-size: 2rem; font-weight: 900; text-transform: uppercase; }
+
+        /* Sidebar / Events */
         .manifest-container {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 20px;
+            border-left: 1px solid var(--border);
+            padding-left: 40px;
         }
 
-        .section-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .label {
             font-family: 'Barlow Condensed';
+            font-size: 0.9rem;
+            color: #444;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 20px;
-            border-left: 4px solid var(--accent);
-            padding-left: 10px;
+            margin-bottom: 30px;
+            display: block;
         }
 
         .event-item {
-            border-bottom: 1px solid var(--border);
-            padding: 15px 0;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .event-item:last-child { border: none; }
-
-        .event-meta { font-size: 0.75rem; text-transform: uppercase; color: #888; margin-bottom: 5px; }
-        .event-name { font-weight: 700; font-size: 1.1rem; margin: 0; }
+        .event-item h3 { margin: 0; font-family: 'Barlow Condensed'; font-size: 1.4rem; text-transform: uppercase; }
+        .event-item p { color: #555; font-size: 0.8rem; margin: 5px 0; }
         
         .event-link {
-            color: var(--accent);
+            color: #fff;
             text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #fff;
+        }
+
+        /* Holo-Mouse Follower (Soft Glow) */
+        #cursor-glow {
+            position: fixed;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
         }
 
         @media (max-width: 900px) {
-            .main-content { grid-template-columns: 1fr; margin-top: 30px; }
-            .hero::before { display: none; }
+            .container { grid-template-columns: 1fr; }
+            .manifest-container { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 40px; }
         }
     </style>
 </head>
 <body>
 
-<section class="hero">
-    <div style="max-width: 1200px; margin: 0 auto;">
-        <div style="font-family: 'Barlow Condensed'; color: var(--accent); font-weight: 700; letter-spacing: 2px;">VIRTUAL TRUCKING COMPANY</div>
-        <h1>D&T <span class="highlight">TRANSPORTE</span></h1>
-        
-        <div class="social-bar">
-            <a href="https://discord.gg/kTJpEdqpKp" target="_blank" class="btn btn-primary">
-                <i class="fab fa-discord"></i> Join Discord
-            </a>
-            <a href="https://truckersmp.com/vtc/85915" target="_blank" class="btn btn-outline">
-                <i class="fas fa-truck"></i> TruckersMP
-            </a>
-        </div>
-    </div>
-</section>
+<div id="cursor-glow"></div>
+<div class="grid-bg"></div>
 
-<main class="main-content">
+<header class="hero">
+    <div class="subtitle">LOGISTICS DATA NETWORK</div>
+    <h1>D&T <span class="holo-text">TRANSPORTE</span></h1>
+    
+    <div class="social-bar">
+        <a href="https://discord.gg/kTJpEdqpKp" target="_blank" class="btn">
+            <i class="fab fa-discord"></i> Discord
+        </a>
+        <a href="https://truckersmp.com/vtc/85915" target="_blank" class="btn">
+            <i class="fas fa-truck"></i> TruckersMP
+        </a>
+    </div>
+</header>
+
+<main class="container">
     <div class="nav-grid">
         <a href="bewerbung.html" class="nav-box">
             <i class="fas fa-file-signature"></i>
@@ -222,13 +259,21 @@
     </div>
 
     <aside class="manifest-container">
-        <div class="section-label">Nächste Einsätze</div>
+        <span class="label">Incoming Missions</span>
         <div id="eventDisplay">
             </div>
     </aside>
 </main>
 
 <script>
+    // Maus-Glow Effekt
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+    });
+
+    // Supabase Integration
     const supabaseUrl = 'https://dihdeuphymaxgxthnjxq.supabase.co';
     const supabaseKey = 'sb_publishable_DOAE2-PtSAC0J2iqFOvfyg_AihL7t74';
     const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
@@ -242,7 +287,7 @@
 
         const container = document.getElementById('eventDisplay');
         if (!data || data.length === 0) {
-            container.innerHTML = "<p style='opacity:0.5; font-size: 0.9rem;'>KEINE AKTIVEN MANIFESTE GEFUNDEN.</p>";
+            container.innerHTML = "<p style='opacity:0.3; font-size: 0.8rem;'>NO ACTIVE MISSIONS FOUND.</p>";
             return;
         }
 
@@ -250,9 +295,9 @@
             const item = document.createElement('div');
             item.className = 'event-item';
             item.innerHTML = `
-                <div class="event-meta">${ev.event_date}</div>
-                <h3 class="event-name">${ev.vtc_name}</h3>
-                <a href="${ev.tmp_link}" target="_blank" class="event-link">EINSATZDETAILS →</a>
+                <p>${ev.event_date}</p>
+                <h3>${ev.vtc_name}</h3>
+                <a href="${ev.tmp_link}" target="_blank" class="event-link">DOWNLOAD MANIFEST</a>
             `;
             container.appendChild(item);
         });
