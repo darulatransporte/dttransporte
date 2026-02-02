@@ -3,183 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T Transporte | Home</title>
+    <title>D&T Transporte | Logistics Hub</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --blue: #0084ff; 
-            --glass: rgba(255, 255, 255, 0.05); 
-            --border: rgba(255, 255, 255, 0.1); 
+            --accent: #ff8c00; /* Safety Orange */
+            --bg: #0f0f0f;
+            --surface: #1a1a1a;
+            --text: #ffffff;
+            --border: #333;
         }
 
         body { 
             margin: 0; 
             font-family: 'Inter', sans-serif; 
-            background: radial-gradient(circle at top, #1a1a1a 0%, #050505 100%); 
-            color: #fff; 
+            background-color: var(--bg);
+            background-image: 
+                linear-gradient(rgba(255, 140, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 140, 0, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text); 
             min-height: 100vh;
         }
 
-        /* Header & Social Links */
-        .header {
-            padding: 60px 20px;
-            text-align: center;
+        /* Industrial Header */
+        .hero {
+            border-bottom: 4px solid var(--accent);
+            padding: 80px 20px;
+            background: linear-gradient(45deg, #000 0%, #151515 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "LOGISTICS";
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-family: 'Barlow Condensed';
+            font-size: 15rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.03);
+            pointer-events: none;
         }
 
         h1 { 
-            font-size: 3rem; 
-            letter-spacing: 10px; 
-            text-transform: uppercase; 
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(3rem, 10vw, 5rem); 
+            font-weight: 900;
             margin: 0;
-            font-weight: 200;
+            line-height: 0.9;
+            text-transform: uppercase;
         }
 
-        .social-links {
-            margin-top: 20px;
+        .highlight { color: var(--accent); }
+
+        .social-bar {
+            margin-top: 30px;
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
-        .social-btn {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 12px 25px;
-            border-radius: 50px;
+        .btn {
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 12px 24px;
             text-decoration: none;
-            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+            border: 2px solid;
+            font-family: 'Barlow Condensed';
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border-color: #fff;
+        }
+
+        .btn:hover {
+            transform: skewX(-5deg);
+            filter: brightness(1.2);
+        }
+
+        /* Main Grid Navigation */
+        .main-content {
+            max-width: 1200px;
+            margin: -40px auto 60px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .nav-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 40px 20px;
+            text-decoration: none;
+            color: #fff;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .nav-box::after {
+            content: '';
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 0 0 20px 20px;
+            border-color: transparent transparent var(--border) transparent;
+        }
+
+        .nav-box:hover {
+            background: #252525;
+            border-color: var(--accent);
+        }
+
+        .nav-box i { font-size: 2rem; color: var(--accent); margin-bottom: 20px; display: block; }
+        .nav-box span { font-family: 'Barlow Condensed'; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; }
+
+        /* Manifest / Event Styling */
+        .manifest-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 20px;
+        }
+
+        .section-label {
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .social-btn:hover {
-            background: var(--blue);
-            border-color: var(--blue);
-            transform: scale(1.05);
-        }
-
-        .social-btn.discord i { color: #5865F2; }
-        .social-btn:hover i { color: #fff; }
-
-        /* Navigation Cards */
-        .nav-container {
-            max-width: 900px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .nav-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            padding: 30px 15px;
-            text-align: center;
-            text-decoration: none;
-            color: #fff;
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            transition: 0.3s;
-        }
-
-        .nav-card:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: var(--blue);
-            transform: translateY(-5px);
-        }
-
-        .nav-card i { font-size: 24px; color: var(--blue); margin-bottom: 15px; display: block; }
-        .nav-card span { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
-
-        /* Event Bereich */
-        .event-section {
-            max-width: 900px;
-            margin: 60px auto;
-            padding: 0 20px;
-        }
-
-        .event-title {
-            text-align: center;
-            font-weight: 200;
-            letter-spacing: 4px;
+            font-family: 'Barlow Condensed';
             text-transform: uppercase;
-            margin-bottom: 30px;
-            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+            padding-left: 10px;
         }
 
-        .event-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+        .event-item {
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
         }
 
-        .event-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-        }
+        .event-item:last-child { border: none; }
 
-        .event-card:hover { border-color: var(--blue); }
-
-        .btn-event-link {
-            display: inline-block;
-            margin-top: 15px;
-            color: var(--blue);
+        .event-meta { font-size: 0.75rem; text-transform: uppercase; color: #888; margin-bottom: 5px; }
+        .event-name { font-weight: 700; font-size: 1.1rem; margin: 0; }
+        
+        .event-link {
+            color: var(--accent);
             text-decoration: none;
-            font-size: 12px;
+            font-size: 0.8rem;
             font-weight: bold;
-            text-transform: uppercase;
+            display: inline-block;
+            margin-top: 10px;
         }
 
-        @media (max-width: 700px) {
-            .nav-container { grid-template-columns: 1fr; }
-            h1 { font-size: 2rem; }
+        @media (max-width: 900px) {
+            .main-content { grid-template-columns: 1fr; margin-top: 30px; }
+            .hero::before { display: none; }
         }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>D&T TRANSPORTE</h1>
-    <div class="social-links">
-        <a href="https://discord.gg/QKquEtXhW5" target="_blank" class="social-btn discord">
-            <i class="fab fa-discord"></i> Discord
+<section class="hero">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="font-family: 'Barlow Condensed'; color: var(--accent); font-weight: 700; letter-spacing: 2px;">VIRTUAL TRUCKING COMPANY</div>
+        <h1>D&T <span class="highlight">TRANSPORTE</span></h1>
+        
+        <div class="social-bar">
+            <a href="https://discord.gg/kTJpEdqpKp" target="_blank" class="btn btn-primary">
+                <i class="fab fa-discord"></i> Join Discord
+            </a>
+            <a href="https://truckersmp.com/vtc/85915" target="_blank" class="btn btn-outline">
+                <i class="fas fa-truck"></i> TruckersMP
+            </a>
+        </div>
+    </div>
+</section>
+
+<main class="main-content">
+    <div class="nav-grid">
+        <a href="bewerbung.html" class="nav-box">
+            <i class="fas fa-file-signature"></i>
+            <span>Bewerben</span>
         </a>
-        <a href="https://truckersmp.com/vtc/85915" target="_blank" class="social-btn">
-            <i class="fas fa-truck"></i> TruckersMP
+        <a href="regeln.html" class="nav-box">
+            <i class="fas fa-gavel"></i>
+            <span>Regeln</span>
+        </a>
+        <a href="event.html" class="nav-box">
+            <i class="fas fa-calendar-plus"></i>
+            <span>Events</span>
         </a>
     </div>
-</div>
 
-<div class="nav-container">
-    <a href="bewerbung.html" class="nav-card">
-        <i class="fas fa-file-signature"></i>
-        <span>Bewerben</span>
-    </a>
-    <a href="regeln.html" class="nav-card">
-        <i class="fas fa-gavel"></i>
-        <span>Regeln</span>
-    </a>
-    <a href="event.html" class="nav-card">
-        <i class="fas fa-calendar-plus"></i>
-        <span>Events</span>
-    </a>
-</div>
-
-<div class="event-section">
-    <h2 class="event-title">Nächste Termine</h2>
-    <div id="eventDisplay" class="event-grid">
-        </div>
-</div>
+    <aside class="manifest-container">
+        <div class="section-label">Nächste Einsätze</div>
+        <div id="eventDisplay">
+            </div>
+    </aside>
+</main>
 
 <script>
     const supabaseUrl = 'https://dihdeuphymaxgxthnjxq.supabase.co';
@@ -195,20 +242,19 @@
 
         const container = document.getElementById('eventDisplay');
         if (!data || data.length === 0) {
-            container.innerHTML = "<p style='text-align:center; opacity:0.3; grid-column: 1/-1;'>Aktuell keine geplanten Events.</p>";
+            container.innerHTML = "<p style='opacity:0.5; font-size: 0.9rem;'>KEINE AKTIVEN MANIFESTE GEFUNDEN.</p>";
             return;
         }
 
         data.forEach(ev => {
-            const card = document.createElement('div');
-            card.className = 'event-card';
-            card.innerHTML = `
-                <div style="font-size:10px; color:var(--blue); font-weight:bold; margin-bottom:5px;">OFFIZIELLES EVENT</div>
-                <h3 style="margin:0; font-size:16px;">${ev.vtc_name}</h3>
-                <p style="margin:5px 0; font-size:13px; color:#aaa;">${ev.event_date}</p>
-                <a href="${ev.tmp_link}" target="_blank" class="btn-event-link">Details ansehen →</a>
+            const item = document.createElement('div');
+            item.className = 'event-item';
+            item.innerHTML = `
+                <div class="event-meta">${ev.event_date}</div>
+                <h3 class="event-name">${ev.vtc_name}</h3>
+                <a href="${ev.tmp_link}" target="_blank" class="event-link">EINSATZDETAILS →</a>
             `;
-            container.appendChild(card);
+            container.appendChild(item);
         });
     }
 
