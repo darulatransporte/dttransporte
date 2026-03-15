@@ -3,111 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T | Codex</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <title>D&T Transporte | Unser Codex</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --bg: #000000;
-            --surface: #0a0a0a;
-            --text: #ffffff;
-            --border: rgba(255, 255, 255, 0.1);
-            --holo: linear-gradient(135deg, #fff 0%, #00ffff 25%, #ff00ff 50%, #ffff00 75%, #fff 100%);
+        :root {
+            --primary: #0062ff;
+            --primary-dark: #0046b3;
+            --dark: #0a0a0b;
+            --surface: #161618;
+            --text: #ececec;
+            --text-dim: #a0a0a0;
+            --white: #ffffff;
+            --border: rgba(255, 255, 255, 0.05);
         }
 
-        body { 
-            margin: 0; 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg);
-            color: var(--text); 
-            min-height: 100vh;
-            overflow-x: hidden;
-            cursor: crosshair;
-        }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
-        /* Gitter Hintergrund */
-        .grid-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-        }
-
-        /* Holo-Animation */
-        @keyframes holo-move {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .holo-text {
-            background: var(--holo);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: holo-move 8s ease infinite;
-        }
-
-        /* Navigation */
-        nav { 
-            display: flex; 
-            justify-content: center; 
-            gap: 30px; 
-            padding: 30px; 
-            border-bottom: 1px solid var(--border);
-            font-family: 'Barlow Condensed';
-            letter-spacing: 2px;
-        }
-        nav a { color: #666; text-decoration: none; font-weight: 700; text-transform: uppercase; transition: 0.3s; }
-        nav a:hover, nav a.active { color: #fff; }
-
-        .container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
-
-        header { text-align: center; margin-bottom: 80px; }
-        header h1 { 
-            font-family: 'Barlow Condensed'; 
-            font-size: 4rem; 
-            text-transform: uppercase; 
+        body {
             margin: 0;
-            line-height: 0.8;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Rule Sections */
-        .rule-section {
-            background: #050505;
+        /* --- NAVIGATION --- */
+        nav {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: var(--surface);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        .logo span { color: var(--primary); }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-left: 25px;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+
+        /* --- HEADER --- */
+        .header-section {
+            padding: 80px 8% 40px;
+            background: radial-gradient(circle at top right, #1a1a1d, var(--dark));
+            text-align: left;
+        }
+
+        .header-section span {
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        .header-section h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin: 10px 0 20px;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+
+        .header-section p {
+            max-width: 700px;
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        /* --- CONTENT --- */
+        .container { padding: 40px 8% 100px; }
+
+        .rule-card {
+            background: var(--surface);
             border: 1px solid var(--border);
             padding: 40px;
-            margin-bottom: 40px;
-            position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease-out;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            transition: 0.3s;
         }
 
-        .rule-section.reveal {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .rule-card:hover { border-color: rgba(0, 98, 255, 0.3); }
 
-        .rule-section::before {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:2px;
-            background: var(--holo); background-size: 400%; opacity: 0.3;
-        }
-
-        .rule-section h2 {
-            font-family: 'Barlow Condensed';
-            font-size: 1.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .rule-card h2 {
+            font-family: 'Montserrat';
+            font-size: 1.5rem;
+            color: var(--white);
             margin-top: 0;
             margin-bottom: 25px;
             display: flex;
             align-items: center;
             gap: 15px;
         }
+
+        .rule-card h2 i { color: var(--primary); font-size: 1.2rem; }
 
         .rule-list {
             list-style: none;
@@ -117,162 +127,109 @@
 
         .rule-list li {
             padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            line-height: 1.6;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             display: flex;
-            align-items: flex-start;
             gap: 15px;
-            color: #888;
-            font-size: 0.95rem;
-            transition: 0.3s;
-        }
-
-        .rule-list li:hover { color: #fff; }
-
-        .rule-list li::before {
-            content: "—";
-            color: #fff;
-            font-weight: bold;
+            color: var(--text-dim);
         }
 
         .rule-list li:last-child { border-bottom: none; }
 
-        .footer-nav {
+        .rule-list li i { color: var(--primary); margin-top: 5px; font-size: 0.9rem; }
+
+        .rule-list b { color: var(--white); font-weight: 600; }
+
+        /* --- CTA FOOTER --- */
+        .cta-box {
             text-align: center;
-            margin-top: 60px;
-            padding-bottom: 100px;
+            padding: 60px;
+            background: linear-gradient(rgba(0, 98, 255, 0.05), transparent);
+            border-radius: 8px;
+            border: 1px solid var(--border);
         }
 
-        .btn-back {
-            font-family: 'Barlow Condensed';
-            text-decoration: none;
-            color: #fff;
-            border: 1px solid #fff;
-            padding: 15px 40px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 900;
-            transition: 0.4s;
-            background: transparent;
+        .btn-join {
             display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-family: 'Montserrat';
+            font-weight: 900;
+            text-transform: uppercase;
+            border-radius: 4px;
+            margin-top: 20px;
+            transition: 0.3s;
         }
 
-        .btn-back:hover {
-            background: #fff;
-            color: #000;
-        }
+        .btn-join:hover { background: var(--primary-dark); transform: translateY(-2px); }
 
-        #cursor-glow {
-            position: fixed; width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-            pointer-events: none; transform: translate(-50%, -50%); z-index: 9999;
-        }
+        footer { text-align: center; padding: 60px 8%; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid var(--border); }
 
-        @media(max-width: 750px) {
-            header h1 { font-size: 2.5rem; }
-            .rule-section { padding: 25px; }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .rule-card { padding: 25px; }
         }
     </style>
 </head>
 <body>
 
-<div id="cursor-glow"></div>
-<div class="grid-bg"></div>
-
 <nav>
-    <a href="index.html">Hub</a>
-    <a href="bewerbung.html">Bewerbung</a>
-    <a href="event.html">Events</a>
-    <a href="regeln.html" class="active">Codex</a>
+    <a href="index.html" class="logo">D&T <span>TRANSPORTE</span></a>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="bewerbung.html">Bewerben</a>
+        <a href="event.html">Events</a>
+        <a href="regeln.html" class="active">Codex</a>
+    </div>
 </nav>
 
+<header class="header-section">
+    <span>Miteinander statt Nebeneinander</span>
+    <h1>Unser <span style="color: var(--primary);">Codex</span></h1>
+    <p>Regeln sind bei uns keine starren Gesetze, sondern das Fundament für eine entspannte Zeit auf der Straße. Wir setzen auf Respekt und gemeinsamen Fahrspaß.</p>
+</header>
+
 <div class="container">
-    <header>
-        <div style="color: #444; font-family: 'Barlow Condensed'; letter-spacing: 5px; margin-bottom: 10px; font-weight: 700;">REGULATORY STATUTES</div>
-        <h1>Company <span class="holo-text">Codex</span></h1>
-    </header>
-
-    <div class="rule-section">
-        <h2>§1 Allgemeines Verhalten</h2>
+    
+    <div class="rule-card">
+        <h2><i class="fas fa-heart"></i> Das Miteinander</h2>
         <ul class="rule-list">
-            <li>Ein respektvoller Umgangston ist oberstes Gebot. Beleidigungen, Rassismus oder Diskriminierung führen zum sofortigen Ausschluss.</li>
-            <li>Wir repräsentieren die Spedition "D&T Transporte". Verhalte dich dementsprechend professionell, sowohl In-Game als auch auf Discord.</li>
-            <li>Probleme unter Fahrern sind privat oder über die Speditionsleitung zu klären. Öffentliches Anprangern ist untersagt.</li>
-            <li>Das Teilen von pornografischen, illegalen oder extremen politischen Inhalten ist streng verboten.</li>
+            <li><i class="fas fa-check"></i> <b>Respekt ist alles:</b> Wir gehen freundlich und offen miteinander um. Beleidigungen haben in unserem Fahrerhaus keinen Platz.</li>
+            <li><i class="fas fa-check"></i> <b>Teamgeist:</b> Wir unterstützen uns gegenseitig – egal ob bei Technikfragen oder auf der Route.</li>
+            <li><i class="fas fa-check"></i> <b>Repräsentation:</b> Wenn du mit unserem Namen fährst, zeigst du der Community, wie cool D&T Transporte ist.</li>
         </ul>
     </div>
 
-    <div class="rule-section">
-        <h2>§2 Verhalten in TruckersMP</h2>
+    <div class="rule-card">
+        <h2><i class="fas fa-truck"></i> Auf der Straße</h2>
         <ul class="rule-list">
-            <li>Die offiziellen TruckersMP-Regeln sind jederzeit einzuhalten. Ein Bann in TruckersMP kann zum Ausschluss führen.</li>
-            <li>Vorsätzliches Rammen, Blockieren oder rücksichtsloses Fahren ist untersagt.</li>
-            <li>Fahre vorausschauend. Wir wollen Simulation, kein Need for Speed.</li>
-            <li>Bei Events oder Konvois ist auf den Event-Staff zu hören.</li>
+            <li><i class="fas fa-check"></i> <b>Fairplay:</b> Die Regeln von TruckersMP sind unsere Basis. Wir fahren sicher und achten auf andere Verkehrsteilnehmer.</li>
+            <li><i class="fas fa-check"></i> <b>Kein Zeitdruck:</b> Realismus ist uns wichtig, aber wir rasen nicht. Genieße die Fahrt und die Landschaft.</li>
+            <li><i class="fas fa-check"></i> <b>Konvoi-Spirit:</b> Bei gemeinsamen Fahrten halten wir zusammen und hören auf die Konvoi-Leitung, damit alle sicher ankommen.</li>
         </ul>
     </div>
 
-    <div class="rule-section">
-        <h2>§3 Konvoiregeln</h2>
+    <div class="rule-card">
+        <h2><i class="fas fa-star"></i> Aktivität</h2>
         <ul class="rule-list">
-            <li>Es herrscht Anwesenheitspflicht im Discord-Voice während des Konvois.</li>
-            <li>Der Sicherheitsabstand beträgt mindestens 50-100 Meter. Bei Lags ist der Abstand zu vergrößern.</li>
-            <li>Überholen ist während eines Konvois grundsätzlich verboten, es sei denn, die Leitung gibt die Freigabe.</li>
-            <li>Die Firmen-Lackierung ist bei offiziellen Konvois Pflicht.</li>
-            <li>Abmeldungen während des Konvois müssen kurz angekündigt werden.</li>
+            <li><i class="fas fa-check"></i> <b>Reallife geht vor:</b> Arbeit, Schule oder Familie sind wichtiger als Kilometer. Sag uns einfach kurz Bescheid, wenn du mal länger Pause machst.</li>
+            <li><i class="fas fa-check"></i> <b>Alter:</b> Wir nehmen Fahrer ab 16 Jahren auf, die Lust auf eine reife und lustige Gemeinschaft haben.</li>
+            <li><i class="fas fa-check"></i> <b>Look:</b> In offiziellen Konvois tragen wir stolz unsere Firmenlackierung.</li>
         </ul>
     </div>
 
-    <div class="rule-section">
-        <h2>§4 Aktivität & Anforderungen</h2>
-        <ul class="rule-list">
-            <li>Wir erwarten eine Grundaktivität. Längere Abwesenheiten sind im Abwesenheitskanal zu melden.</li>
-            <li>Das Mindestalter für den Beitritt beträgt 16 Jahre.</li>
-            <li>Das Nutzen unseres Fahrer-Tags "D&T Transporte" im Tab-Menü ist erwünscht.</li>
-            <li>Profilbilder und Namen sollten angemessen sein.</li>
-        </ul>
+    <div class="cta-box">
+        <h3>Klingt fair?</h3>
+        <p>Wenn du dich mit unseren Werten identifizieren kannst, freuen wir uns auf dich!</p>
+        <a href="bewerbung.html" class="btn-join">Werde Teil des Teams</a>
     </div>
 
-    <div class="rule-section">
-        <h2>§5 Schlussbestimmungen</h2>
-        <ul class="rule-list">
-            <li>Die Speditionsleitung behält sich das Recht vor, das Regelwerk jederzeit anzupassen.</li>
-            <li>Unwissenheit schützt vor Strafe nicht.</li>
-            <li>Mit dem Beitritt zur Spedition akzeptierst du dieses Regelwerk vollumfänglich.</li>
-        </ul>
-    </div>
-
-    <div class="footer-nav">
-        <a href="index.html" class="btn-back">Back to Hub</a>
-    </div>
 </div>
 
-<script>
-    // Maus-Glow Effekt
-    const glow = document.getElementById('cursor-glow');
-    document.addEventListener('mousemove', e => {
-        glow.style.left = e.clientX + 'px';
-        glow.style.top = e.clientY + 'px';
-    });
-
-    // Scroll Animation Logik
-    document.addEventListener("DOMContentLoaded", function() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('reveal');
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
-
-        const sections = document.querySelectorAll('.rule-section');
-        sections.forEach(sec => {
-            observer.observe(sec);
-        });
-    });
-</script>
+<footer>
+    &copy; 2026 D&T Transporte • Gemeinschaft. Leidenschaft. Logistik.
+</footer>
 
 </body>
 </html>
