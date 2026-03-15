@@ -1,253 +1,174 @@
-/* D&T TRANSPORTE - GLOBAL STYLESHEET 
-    Design: Modern Logistics / Dark Mode
+/* D&T TRANSPORTE - PREMIUM LOGISTICS STYLESHEET 2.0
+   Design: Modern Dark, Blue Neon Accents, High Precision
 */
 
 :root {
-    --primary: #0062ff;            /* Das D&T Blau */
-    --primary-glow: rgba(0, 98, 255, 0.4);
-    --bg: #0a0a0b;                /* Tiefschwarz/Grau Hintergrund */
-    --surface: #161618;           /* Karten-Hintergrund */
-    --text-main: #ececec;         /* Haupttext */
-    --text-dim: #a0a0a0;          /* Nebentext */
-    --white: #ffffff;
-    --border: rgba(255, 255, 255, 0.08);
-    --transition: all 0.3s ease;
+    --primary: #0062ff;
+    --primary-glow: rgba(0, 98, 255, 0.3);
+    --bg: #050506;
+    --surface: #0f0f12;
+    --surface-light: #18181b;
+    --text-main: #f4f4f5;
+    --text-dim: #a1a1aa;
+    --border: rgba(255, 255, 255, 0.06);
+    --accent: #00d2ff;
+    --success: #00ff88;
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Grund-Setup */
-* {
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     background-color: var(--bg);
     color: var(--text-main);
-    line-height: 1.6;
+    line-height: 1.7;
     overflow-x: hidden;
 }
 
-/* Navigation */
+/* Scrollbar Style */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface-light); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* Navigation Refresh */
 nav {
-    position: sticky;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.2rem 8%;
-    background: rgba(22, 22, 24, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
+    position: sticky; top: 0; z-index: 1000;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 8%;
+    background: rgba(5, 5, 6, 0.8);
+    backdrop-filter: blur(15px);
     border-bottom: 1px solid var(--border);
 }
 
 .logo {
     font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    font-size: 1.5rem;
-    color: var(--white);
-    text-decoration: none;
-    letter-spacing: 1.5px;
+    font-weight: 900; font-size: 1.6rem;
+    color: var(--white); text-decoration: none;
+    letter-spacing: 2px;
 }
 
-.logo span {
-    color: var(--primary);
-}
+.logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary-glow); }
 
-.nav-links {
-    display: flex;
-    gap: 2rem;
-}
-
+.nav-links { display: flex; gap: 35px; }
 .nav-links a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    color: var(--text-dim); text-decoration: none;
+    font-weight: 600; font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 1.5px;
     transition: var(--transition);
 }
 
-.nav-links a:hover, 
-.nav-links a.active {
-    color: var(--primary);
-}
+.nav-links a:hover, .nav-links a.active { color: var(--primary); }
 
-/* Hero Bereich */
+/* Hero / Header Expanded */
 .hero {
-    padding: 100px 8% 60px;
-    background: radial-gradient(circle at top right, #1a1a2e, var(--bg));
-    text-align: left;
+    padding: 140px 8% 80px;
+    background: 
+        radial-gradient(circle at 80% 20%, rgba(0, 98, 255, 0.08), transparent),
+        radial-gradient(circle at 10% 80%, rgba(0, 210, 255, 0.05), transparent);
 }
 
-.hero span {
+.hero span.badge {
+    background: var(--primary-glow);
     color: var(--primary);
-    text-transform: uppercase;
-    font-size: 0.9rem;
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-size: 0.75rem;
     font-weight: 800;
-    letter-spacing: 4px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .hero h1 {
     font-family: 'Montserrat', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    margin: 15px 0 25px;
-    color: var(--white);
-    line-height: 1.1;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    margin: 25px 0;
+    line-height: 1;
+    font-weight: 900;
     text-transform: uppercase;
 }
 
 .hero p {
-    max-width: 650px;
-    font-size: 1.15rem;
+    max-width: 700px;
+    font-size: 1.2rem;
     color: var(--text-dim);
     margin-bottom: 40px;
 }
 
-/* Container & Grid */
-.container {
-    padding: 60px 8%;
+/* Cards & Layout */
+.container { padding: 40px 8% 100px; }
+
+.section-title {
+    font-family: 'Montserrat';
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    font-size: 1.8rem;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-/* Karten-Design */
 .card {
     background: var(--surface);
     border: 1px solid var(--border);
     padding: 40px;
-    border-radius: 12px;
+    border-radius: 16px;
     transition: var(--transition);
-    position: relative;
-    overflow: hidden;
+    height: 100%;
 }
 
 .card:hover {
     border-color: var(--primary);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
-.card h2, .card h3 {
-    font-family: 'Montserrat', sans-serif;
-    color: var(--white);
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
-}
-
-.card i {
-    color: var(--primary);
-    font-size: 2rem;
-    margin-bottom: 20px;
-    display: block;
-}
-
-/* Listen-Stil (Regeln) */
-.rule-list {
-    list-style: none;
-}
-
-.rule-list li {
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-}
-
-.rule-list li:last-child {
-    border-bottom: none;
-}
-
-.rule-list b {
-    color: var(--primary);
-}
-
-/* Formular Elemente */
-.form-group {
-    margin-bottom: 20px;
-}
-
+/* Form Styles Refresh */
+.form-group { margin-bottom: 25px; }
 label {
-    display: block;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 8px;
-    font-weight: 700;
+    display: block; font-size: 0.75rem; font-weight: 700;
+    color: var(--text-dim); text-transform: uppercase;
+    margin-bottom: 10px; letter-spacing: 1px;
 }
 
 input, textarea, select {
-    width: 100%;
-    background: #0d0d0f;
+    width: 100%; background: #08080a;
     border: 1px solid var(--border);
-    color: var(--white);
-    padding: 15px;
-    border-radius: 6px;
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    transition: var(--transition);
+    color: white; padding: 18px;
+    border-radius: 8px; font-family: inherit;
+    font-size: 1rem; transition: var(--transition);
 }
 
-input:focus, textarea:focus {
-    border-color: var(--primary);
-    outline: none;
-    box-shadow: 0 0 10px var(--primary-glow);
-}
+input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 15px var(--primary-glow); }
 
-/* Buttons */
+/* Button Style */
 .btn {
-    display: inline-block;
     background: var(--primary);
-    color: var(--white);
-    padding: 18px 40px;
-    text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: var(--transition);
+    color: white; border: none;
+    padding: 20px 40px;
+    border-radius: 8px;
+    font-family: 'Montserrat'; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 2px;
+    cursor: pointer; transition: var(--transition);
+    display: inline-block; text-decoration: none;
 }
 
-.btn:hover {
-    background: #0056e0;
-    transform: scale(1.02);
+.btn:hover { background: #0056e0; transform: scale(1.03); box-shadow: 0 10px 20px rgba(0, 98, 255, 0.3); }
+
+/* Specialized Components */
+.countdown-box {
+    background: linear-gradient(90deg, var(--surface), var(--bg));
+    padding: 20px; border-radius: 12px;
+    border: 1px solid var(--primary);
+    margin-bottom: 40px; text-align: center;
 }
 
-.btn-outline {
-    background: transparent;
-    border: 2px solid var(--border);
-}
+#timer { font-family: 'Montserrat'; font-weight: 900; font-size: 2rem; color: var(--primary); }
 
-.btn-outline:hover {
-    border-color: var(--white);
-    background: var(--white);
-    color: var(--bg);
-}
-
-/* Footer */
 footer {
-    text-align: center;
-    padding: 80px 8% 40px;
-    border-top: 1px solid var(--border);
-    color: var(--text-dim);
-    font-size: 0.9rem;
+    padding: 80px 8%; border-top: 1px solid var(--border);
+    text-align: center; color: var(--text-dim);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .nav-links { display: none; }
-    .hero h1 { font-size: 2.8rem; }
-    .container { padding: 40px 5%; }
+    .hero h1 { font-size: 3rem; }
 }
