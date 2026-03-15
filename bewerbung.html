@@ -2,70 +2,69 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T | Bewirb dich jetzt</title>
+    <title>D&T | Karriere</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
 <nav>
     <a href="index.html" class="logo">D&T <span>TRANSPORTE</span></a>
     <div class="nav-links">
-        <a href="index.html">Start</a>
-        <a href="bewerbung.html" class="active">Bewerben</a>
-        <a href="regeln.html">Regeln</a>
-        <a href="event.html">Events</a>
+        <a href="index.html">Home</a>
+        <a href="bewerbung.html" class="active">Karriere</a>
+        <a href="event.html">Event-Hub</a>
+        <a href="regeln.html">Codex</a>
     </div>
 </nav>
 
 <header class="hero">
-    <span>Werde Teil des Teams</span>
-    <h1>Starte deine <br><span>Karriere.</span></h1>
-    <p>Wir suchen immer motivierte Fahrer. Füll das Formular aus und wir melden uns bei dir für ein kurzes Kennenlernen auf dem Discord.</p>
+    <span class="badge">Join the Fleet</span>
+    <h1>Werde Teil <br><span>der Legende.</span></h1>
+    <p>Wir suchen Fahrer, die nicht nur Gas geben, sondern die Straßen mit Respekt und Leidenschaft befahren. Unser Bewerbungsprozess ist einfach, aber wir legen Wert auf Ehrlichkeit und Teamfähigkeit. Füll das Formular aus und starte deine Probezeit.</p>
 </header>
 
 <div class="container">
-    <form class="card" style="max-width: 800px; margin: 0 auto;" action="https://formspree.io/f/xdakqdqd" method="POST">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <form class="card" style="max-width: 900px; margin: 0 auto;" action="https://formspree.io/f/xdakqdqd" method="POST">
+        <h2 style="margin-bottom: 30px;">Bewerbungsformular</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
             <div class="form-group">
-                <label>Vollständiger Name / Nickname</label>
-                <input type="text" name="Name" required placeholder="z.B. Max Mustermann">
+                <label>Dein Vorname / Nickname</label>
+                <input type="text" name="name" required placeholder="z.B. TruckerMax">
             </div>
             <div class="form-group">
-                <label>Dein Alter</label>
-                <input type="number" name="Alter" required placeholder="z.B. 22">
+                <label>Dein Alter (Mind. 16 Jahre bevorzugt)</label>
+                <input type="number" name="alter" required placeholder="16">
             </div>
         </div>
 
         <div class="form-group">
-            <label>Steam Profil Link</label>
-            <input type="url" name="Steam" required placeholder="https://steamcommunity.com/id/...">
+            <label>Deine Erfahrung (Stunden in ETS2/ATS)</label>
+            <select name="erfahrung" required>
+                <option value="neuling">Anfänger (0-100 Stunden)</option>
+                <option value="fortgeschritten">Fortgeschritten (100-500 Stunden)</option>
+                <option value="profi">Profi (500-1500 Stunden)</option>
+                <option value="veteran">Veteran (1500+ Stunden)</option>
+            </select>
+            <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 5px;">*Deine Stunden helfen uns, dir das passende Mentoring anzubieten.</p>
         </div>
 
         <div class="form-group">
-            <label>Besitzt du DLCs?</label>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #0d0d0f; padding: 15px; border-radius: 6px;">
-                <label style="font-size: 0.7rem;"><input type="checkbox" name="DLC" value="Going East"> Going East</label>
-                <label style="font-size: 0.7rem;"><input type="checkbox" name="DLC" value="Scandinavia"> Scandinavia</label>
-                <label style="font-size: 0.7rem;"><input type="checkbox" name="DLC" value="France"> Vive la France</label>
-                <label style="font-size: 0.7rem;"><input type="checkbox" name="DLC" value="Italia"> Italia</label>
-                <label style="font-size: 0.7rem;"><input type="checkbox" name="DLC" value="Baltic"> Baltic Sea</label>
-                <label style="font-size: 0.7rem;"><input type="checkbox" name="DLC" value="Black Sea"> Black Sea</label>
-                <label style="font-size: 0.7rem;"><input type="checkbox" name="DLC" value="Iberia"> Iberia</label>
-                <label style="font-size: 0.7rem;"><input type="checkbox" name="DLC" value="Balkans"> West Balkans</label>
+            <label>Warum möchtest du zu D&T Transporte?</label>
+            <textarea name="motivation" rows="6" placeholder="Erzähl uns von deiner Leidenschaft für LKWs..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Besitzt du ein funktionierendes Mikrofon?</label>
+            <div style="display: flex; gap: 20px; padding: 10px;">
+                <label style="font-size: 0.9rem;"><input type="radio" name="mic" value="ja" checked> Ja</label>
+                <label style="font-size: 0.9rem;"><input type="radio" name="mic" value="nein"> Nein</label>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Warum möchtest du zu D&T?</label>
-            <textarea name="Grund" rows="5" placeholder="Erzähl uns kurz etwas über dich..."></textarea>
-        </div>
-
-        <button type="submit" class="btn" style="width: 100%;">Bewerbung absenden</button>
+        <button type="submit" class="btn" style="width: 100%;">Bewerbung abschicken</button>
     </form>
 </div>
 
-<footer>&copy; 2026 D&T Transporte</footer>
 </body>
 </html>
