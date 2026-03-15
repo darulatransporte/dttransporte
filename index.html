@@ -2,320 +2,35 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T Transporte | Logistik mit Leidenschaft</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #0062ff;
-            --primary-dark: #0046b3;
-            --dark: #0a0a0b;
-            --surface: #161618;
-            --text: #ececec;
-            --text-dim: #a0a0a0;
-            --white: #ffffff;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            position: sticky;
-            top: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 8%;
-            background: var(--surface);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 1.4rem;
-            color: var(--white);
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
-
-        .logo span { color: var(--primary); }
-
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.85rem;
-            margin-left: 25px;
-            transition: 0.2s;
-            text-transform: uppercase;
-        }
-
-        .nav-links a:hover { color: var(--primary); }
-
-        /* --- HERO SECTION (OHNE BILD) --- */
-        .hero {
-            padding: 100px 8% 80px;
-            background: radial-gradient(circle at top right, #1a1a1d, var(--dark));
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .hero h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            margin: 0;
-            line-height: 1.1;
-            color: var(--white);
-        }
-
-        .hero p {
-            font-size: 1.15rem;
-            max-width: 800px;
-            margin: 25px 0 40px;
-            color: var(--text-dim);
-        }
-
-        .btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
-        
-        .btn {
-            padding: 14px 30px;
-            text-decoration: none;
-            font-weight: 700;
-            border-radius: 4px;
-            transition: 0.3s;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
-
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
-
-        .btn-outline { border: 1px solid rgba(255,255,255,0.2); color: white; }
-        .btn-outline:hover { background: white; color: black; }
-
-        /* --- INFO SEKTION --- */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 60px 8%;
-        }
-
-        .info-card {
-            background: var(--surface);
-            padding: 40px;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        .info-card i { color: var(--primary); font-size: 2rem; margin-bottom: 20px; }
-        .info-card h3 { margin: 0 0 15px 0; font-family: 'Montserrat'; font-size: 1.3rem; }
-        .info-card p { color: var(--text-dim); font-size: 0.95rem; margin: 0; }
-
-        /* --- TEXT BLOCK --- */
-        .about-section {
-            padding: 80px 8%;
-            background: #0d0d0f;
-        }
-
-        .about-content {
-            max-width: 900px;
-        }
-
-        .about-section h2 {
-            font-family: 'Montserrat';
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .about-section p {
-            font-size: 1.1rem;
-            color: var(--text-dim);
-            margin-bottom: 20px;
-        }
-
-        /* --- MISSION LIST --- */
-        .mission-container {
-            padding: 80px 8%;
-        }
-
-        .mission-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 40px;
-            border-left: 4px solid var(--primary);
-            padding-left: 20px;
-        }
-
-        .mission-header h2 { margin: 0; font-family: 'Montserrat'; text-transform: uppercase; }
-
-        .mission-item {
-            background: var(--surface);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px;
-            margin-bottom: 12px;
-            border-radius: 4px;
-            border: 1px solid rgba(255,255,255,0.03);
-        }
-
-        .mission-date { color: var(--primary); font-weight: 700; font-size: 0.8rem; display: block; margin-bottom: 5px; }
-        .mission-name { font-size: 1.2rem; font-weight: 600; margin: 0; }
-
-        .manifest-btn {
-            background: rgba(255,255,255,0.05);
-            color: var(--white);
-            padding: 10px 20px;
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border-radius: 3px;
-            text-transform: uppercase;
-            transition: 0.2s;
-        }
-
-        .manifest-btn:hover { background: var(--white); color: var(--dark); }
-
-        footer {
-            padding: 60px 8%;
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            color: var(--text-dim);
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .mission-item { flex-direction: column; align-items: flex-start; gap: 20px; }
-        }
-    </style>
+    <title>D&T Transporte | Startseite</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <nav>
+        <a href="index.html" class="logo">D&T <span>TRANSPORTE</span></a>
+        <div class="nav-links">
+            <a href="index.html" class="active">Start</a>
+            <a href="bewerbung.html">Bewerben</a>
+            <a href="regeln.html">Regeln</a>
+            <a href="event.html">Events</a>
+        </div>
+    </nav>
 
-<nav>
-    <a href="index.html" class="logo">D&T <span>TRANSPORTE</span></a>
-    <div class="nav-links">
-        <a href="bewerbung.html">Bewerben</a>
-        <a href="regeln.html">Regeln</a>
-        <a href="event.html">Events</a>
-    </div>
-</nav>
+    <header class="header-section">
+        <h1>Willkommen im <span>Team</span></h1>
+        <p>Deine virtuelle Spedition für ETS2 & ATS. Fahrspaß ohne Zwang.</p>
+        <br>
+        <a href="bewerbung.html" class="btn">Jetzt Mitfahren</a>
+    </header>
 
-<header class="hero">
-    <h1>EINE SPEDITION,<br>DIE BEWEGT.</h1>
-    <p>
-        D&T Transporte ist mehr als nur eine virtuelle Firma. Wir sind eine Gemeinschaft von Fahrern, 
-        die Wert auf Realismus, Zusammenhalt und den gemeinsamen Spaß auf den Straßen von Euro Truck Simulator 2 legt.
-    </p>
-    <div class="btn-group">
-        <a href="bewerbung.html" class="btn btn-primary">Fahrer werden</a>
-        <a href="https://discord.gg/kTJpEdqpKp" class="btn btn-outline"><i class="fab fa-discord"></i> Discord beitreten</a>
-    </div>
-</header>
-
-<section class="content-grid">
-    <div class="info-card">
-        <i class="fas fa-clock"></i>
-        <h3>Flexible Fahrzeiten</h3>
-        <p>Bei uns gibt es keinen Zwang. Fahre wann du willst und wie viel du willst. Dein Privatleben geht immer vor.</p>
-    </div>
-    <div class="info-card">
-        <i class="fas fa-users"></i>
-        <h3>Starke Gemeinschaft</h3>
-        <p>Täglicher Austausch auf Discord und regelmäßige Konvois sorgen für eine Atmosphäre, in der sich jeder wohlfühlt.</p>
-    </div>
-    <div class="info-card">
-        <i class="fas fa-road"></i>
-        <h3>Eigener Fuhrpark</h3>
-        <p>Nutze unsere Firmenlackierung und zeige Präsenz auf den Straßen von TruckersMP.</p>
-    </div>
-</section>
-
-<section class="about-section">
-    <div class="about-content">
-        <h2>Über D&T Transporte</h2>
-        <p>
-            Gegründet mit dem Ziel, die virtuelle Logistik für jeden zugänglich zu machen, bieten wir bei D&T Transporte ein professionelles Umfeld für ETS2-Begeisterte. Wir legen großen Wert auf ein freundliches Miteinander und gegenseitigen Respekt.
-        </p>
-        <p>
-            Unsere Fahrer profitieren von einem einfachen Abrechnungssystem, kompetenter Unterstützung bei technischen Fragen und einer organisierten Event-Planung. Egal ob Anfänger oder erfahrener Profi – bei uns findet jeder seinen Platz am Steuer.
-        </p>
-    </div>
-</section>
-
-<section class="mission-container">
-    <div class="mission-header">
-        <div>
-            <span style="color: var(--text-dim); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;">Logistik-Zentrum</span>
-            <h2>Anstehende Missionen</h2>
+    <div class="container">
+        <div class="card">
+            <h3>Über uns</h3>
+            <p>Wir sind eine Gemeinschaft von Fahrern, die die Straße lieben. Bei uns zählt der Mensch, nicht nur die gefahrenen Kilometer.</p>
         </div>
     </div>
-    
-    <div id="eventDisplay">
-        </div>
-</section>
 
-<footer>
-    <p>&copy; 2026 D&T Transporte • Eine virtuelle Spedition für Euro Truck Simulator 2</p>
-</footer>
-
-<script>
-    const supabaseUrl = 'https://dihdeuphymaxgxthnjxq.supabase.co';
-    const supabaseKey = 'sb_publishable_DOAE2-PtSAC0J2iqFOvfyg_AihL7t74';
-    const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-    async function loadEvents() {
-        const container = document.getElementById('eventDisplay');
-        try {
-            const { data, error } = await _supabase
-                .from('dt-event-portal')
-                .select('*')
-                .eq('confirmed', true)
-                .order('id', { ascending: false });
-
-            if (!data || data.length === 0) {
-                container.innerHTML = "<p style='color:var(--text-dim);'>Momentan sind keine Missionen im System verzeichnet.</p>";
-                return;
-            }
-
-            data.forEach(ev => {
-                const item = document.createElement('div');
-                item.className = 'mission-item';
-                item.innerHTML = `
-                    <div>
-                        <span class="mission-date">${new Date(ev.event_date).toLocaleDateString('de-DE')}</span>
-                        <h4 class="mission-name">${ev.vtc_name}</h4>
-                    </div>
-                    <a href="${ev.tmp_link}" target="_blank" class="manifest-btn">Unterlagen öffnen</a>
-                `;
-                container.appendChild(item);
-            });
-        } catch (e) {
-            console.error("Fehler beim Laden der Events.");
-        }
-    }
-
-    loadEvents();
-</script>
-
+    <footer>&copy; 2026 D&T Transporte</footer>
 </body>
 </html>
