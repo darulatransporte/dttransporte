@@ -1,21 +1,31 @@
+/* D&T TRANSPORTE - GLOBAL STYLESHEET 
+    Design: Modern Logistics / Dark Mode
+*/
+
 :root {
-    --primary: #0062ff;
-    --primary-hover: #004dc9;
-    --bg: #0a0a0b;
-    --surface: #161618;
-    --text: #ececec;
-    --text-dim: #a0a0a0;
+    --primary: #0062ff;            /* Das D&T Blau */
+    --primary-glow: rgba(0, 98, 255, 0.4);
+    --bg: #0a0a0b;                /* Tiefschwarz/Grau Hintergrund */
+    --surface: #161618;           /* Karten-Hintergrund */
+    --text-main: #ececec;         /* Haupttext */
+    --text-dim: #a0a0a0;          /* Nebentext */
     --white: #ffffff;
-    --border: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.08);
+    --transition: all 0.3s ease;
 }
 
-* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+/* Grund-Setup */
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
+}
 
 body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--bg);
-    color: var(--text);
+    color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
 }
@@ -27,8 +37,9 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 8%;
-    background: var(--surface);
+    padding: 1.2rem 8%;
+    background: rgba(22, 22, 24, 0.95);
+    backdrop-filter: blur(10px);
     z-index: 1000;
     border-bottom: 1px solid var(--border);
 }
@@ -36,87 +47,207 @@ nav {
 .logo {
     font-family: 'Montserrat', sans-serif;
     font-weight: 900;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: var(--white);
     text-decoration: none;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
 }
 
-.logo span { color: var(--primary); }
+.logo span {
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
 
 .nav-links a {
     color: var(--text-dim);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.85rem;
-    margin-left: 25px;
-    transition: 0.2s;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition);
 }
 
-.nav-links a:hover, .nav-links a.active { color: var(--primary); }
-
-/* Header / Hero */
-.header-section {
-    padding: 80px 8% 40px;
-    background: radial-gradient(circle at top right, #1a1a1d, var(--bg));
+.nav-links a:hover, 
+.nav-links a.active {
+    color: var(--primary);
 }
 
-.header-section h1 {
+/* Hero Bereich */
+.hero {
+    padding: 100px 8% 60px;
+    background: radial-gradient(circle at top right, #1a1a2e, var(--bg));
+    text-align: left;
+}
+
+.hero span {
+    color: var(--primary);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+}
+
+.hero h1 {
     font-family: 'Montserrat', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    margin: 10px 0;
-    text-transform: uppercase;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    margin: 15px 0 25px;
     color: var(--white);
+    line-height: 1.1;
+    text-transform: uppercase;
 }
 
-/* Container & Cards */
-.container { padding: 40px 8% 80px; }
+.hero p {
+    max-width: 650px;
+    font-size: 1.15rem;
+    color: var(--text-dim);
+    margin-bottom: 40px;
+}
 
+/* Container & Grid */
+.container {
+    padding: 60px 8%;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* Karten-Design */
 .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    padding: 30px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    transition: 0.3s;
+    padding: 40px;
+    border-radius: 12px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
 }
 
-.card:hover { border-color: var(--primary); }
+.card:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
 
-/* Formulare */
+.card h2, .card h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.card i {
+    color: var(--primary);
+    font-size: 2rem;
+    margin-bottom: 20px;
+    display: block;
+}
+
+/* Listen-Stil (Regeln) */
+.rule-list {
+    list-style: none;
+}
+
+.rule-list li {
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.rule-list li:last-child {
+    border-bottom: none;
+}
+
+.rule-list b {
+    color: var(--primary);
+}
+
+/* Formular Elemente */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
 input, textarea, select {
     width: 100%;
     background: #0d0d0f;
     border: 1px solid var(--border);
     color: var(--white);
-    padding: 12px;
-    border-radius: 4px;
-    margin-top: 5px;
-    font-family: inherit;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    transition: var(--transition);
 }
 
+input:focus, textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+/* Buttons */
 .btn {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-family: 'Montserrat';
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: 0.3s;
-    text-decoration: none;
     display: inline-block;
+    background: var(--primary);
+    color: var(--white);
+    padding: 18px 40px;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
-.btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
+.btn:hover {
+    background: #0056e0;
+    transform: scale(1.02);
+}
 
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--border);
+}
+
+.btn-outline:hover {
+    border-color: var(--white);
+    background: var(--white);
+    color: var(--bg);
+}
+
+/* Footer */
 footer {
     text-align: center;
-    padding: 40px;
-    color: var(--text-dim);
-    font-size: 0.8rem;
+    padding: 80px 8% 40px;
     border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hero h1 { font-size: 2.8rem; }
+    .container { padding: 40px 5%; }
 }
