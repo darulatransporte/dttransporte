@@ -3,353 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T Transporte | Event Hub</title>
+    <title>D&T Transporte | Event Management</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #0062ff;
-            --primary-dark: #0046b3;
-            --dark: #0a0a0b;
-            --surface: #161618;
-            --text: #ececec;
-            --text-dim: #a0a0a0;
-            --white: #ffffff;
-            --border: rgba(255, 255, 255, 0.05);
-        }
-
-        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            position: sticky;
-            top: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 8%;
-            background: var(--surface);
-            z-index: 1000;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 1.4rem;
-            color: var(--white);
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
-
-        .logo span { color: var(--primary); }
-
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.85rem;
-            margin-left: 25px;
-            transition: 0.2s;
-            text-transform: uppercase;
-        }
-        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
-
-        /* --- HERO / HEADER --- */
-        .header-section {
-            padding: 80px 8% 40px;
-            background: radial-gradient(circle at top right, #1a1a1d, var(--dark));
-            text-align: left;
-        }
-
-        .header-section span {
-            color: var(--primary);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-        }
-
-        .header-section h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin: 10px 0 0;
-            color: var(--white);
-            text-transform: uppercase;
-        }
-
-        /* --- GRID & CARDS --- */
-        .container { padding: 40px 8% 80px; }
-
-        .event-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-            margin-bottom: 80px;
-        }
-
-        .card {
-            background: var(--surface);
-            padding: 30px;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-            position: relative;
-            transition: 0.3s ease;
-        }
-
-        .card:hover { border-color: var(--primary); transform: translateY(-3px); }
-
-        .card.pending { border-style: dashed; opacity: 0.7; }
-
-        .status-tag {
-            font-size: 0.65rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .status-verified { color: #00ff88; }
-        .status-review { color: #ffcc00; }
-
-        .card h3 { 
-            margin: 0 0 10px; 
-            font-family: 'Montserrat'; 
-            font-size: 1.4rem; 
-            color: var(--white);
-        }
-
-        .card .event-info {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            margin-bottom: 20px;
-        }
-
-        .card .event-info i { color: var(--primary); width: 20px; }
-
-        .btn-manifest {
-            display: inline-block;
-            padding: 10px 18px;
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--white);
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            border-radius: 3px;
-            transition: 0.2s;
-        }
-
-        .btn-manifest:hover { background: var(--white); color: var(--dark); }
-
-        /* --- FORMULAR SEKTION --- */
-        .submit-section {
-            background: var(--surface);
-            padding: 60px;
-            border-radius: 8px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .submit-section h2 {
-            font-family: 'Montserrat';
-            margin-top: 0;
-            color: var(--white);
-            text-transform: uppercase;
-        }
-
-        .form-group { margin-bottom: 20px; }
-        
-        label { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; font-weight: 700; }
-
-        input, textarea {
-            width: 100%;
-            background: #0d0d0f;
-            border: 1px solid var(--border);
-            color: var(--white);
-            padding: 15px;
-            border-radius: 4px;
-            font-family: 'Inter';
-            font-size: 0.9rem;
-        }
-
-        input:focus, textarea:focus { border-color: var(--primary); outline: none; }
-
-        .btn-submit {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 18px;
-            width: 100%;
-            font-family: 'Montserrat';
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.3s;
-            border-radius: 4px;
-        }
-
-        .btn-submit:hover { background: var(--primary-dark); }
-
-        /* --- MODAL --- */
-        #customModal {
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
-        }
-        #customModal.active { display: flex; }
-        .modal-box { background: var(--surface); padding: 50px; text-align: center; border-radius: 8px; max-width: 450px; border: 1px solid var(--primary); }
-
-        /* --- ADMIN TOOLS --- */
-        .admin-controls {
-            display: flex; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);
-        }
-        .admin-btn {
-            flex: 1; padding: 8px; background: transparent; border: 1px solid #333; color: var(--text-dim); 
-            cursor: pointer; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-        }
-        .admin-btn:hover { border-color: var(--white); color: var(--white); }
-
-        footer { text-align: center; padding: 60px 8%; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid var(--border); }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .submit-section { padding: 30px; }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <nav>
     <a href="index.html" class="logo">D&T <span>TRANSPORTE</span></a>
     <div class="nav-links">
-        <a href="index.html">Home</a>
+        <a href="index.html">Start</a>
         <a href="bewerbung.html">Bewerben</a>
-        <a href="event.html" class="active">Events</a>
         <a href="regeln.html">Regeln</a>
+        <a href="event.html" class="active">Events</a>
     </div>
 </nav>
 
-<header class="header-section">
+<header class="hero">
     <span>Operational Hub</span>
-    <h1>Event <span style="color: var(--primary);">Management</span></h1>
+    <h1>Event <br><span>Management.</span></h1>
+    <p>Hier verwalten wir unsere gemeinsamen Fahrten. Andere VTCs können unten ihre Einladungen einreichen, damit wir sie in unseren Kalender aufnehmen können.</p>
 </header>
 
 <div class="container">
+    
+    <h2 style="margin-bottom: 30px; font-family: 'Montserrat'; text-transform: uppercase;">Aktueller Fahrplan</h2>
+    
     <div id="eventList" class="event-grid">
-        </div>
+        <p style="color: var(--text-dim);">Lade aktuelle Operationen...</p>
+    </div>
 
-    <div class="submit-section">
-        <h2>Einladung einreichen</h2>
-        <div class="form-group">
-            <label>Name der VTC / Gemeinschaft</label>
-            <input type="text" id="vName" placeholder="z.B. Global Logistics">
+    <hr style="border: 0; border-top: 1px solid var(--border); margin: 80px 0;">
+
+    <div style="max-width: 800px; margin: 0 auto;">
+        <div class="card">
+            <h2 style="text-align: center;">Einladung einreichen</h2>
+            <p style="text-align: center; color: var(--text-dim); margin-bottom: 30px;">
+                Ihr plant ein Event und wollt D&T dabei haben? Reicht hier eure Daten ein!
+            </p>
+            
+            <div class="form-group">
+                <label>Name der VTC / Gemeinschaft</label>
+                <input type="text" id="vName" placeholder="z.B. Global Logistics Group">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>Datum & Uhrzeit</label>
+                    <input type="text" id="vDate" placeholder="z.B. 24.12.2026 - 20:00 Uhr">
+                </div>
+                <div class="form-group">
+                    <label>TruckersMP Link</label>
+                    <input type="url" id="vLink" placeholder="https://truckersmp.com/events/...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Zusätzliche Informationen (Treffpunkt, Slot, Nachricht)</label>
+                <textarea id="vMsg" rows="4" placeholder="Teilt uns Details zum Konvoi mit..."></textarea>
+            </div>
+
+            <button class="btn" onclick="submitEvent()" style="width: 100%;">Daten übermitteln</button>
         </div>
-        <div class="form-group">
-            <label>Datum & Uhrzeit</label>
-            <input type="text" id="vDate" placeholder="z.B. 24.12.2026 - 20:00 Uhr">
-        </div>
-        <div class="form-group">
-            <label>TruckersMP Event Link</label>
-            <input type="text" id="vLink" placeholder="https://truckersmp.com/events/...">
-        </div>
-        <div class="form-group">
-            <label>Zusätzliche Infos (Treffpunkt, Slot, etc.)</label>
-            <textarea id="vMsg" rows="4" placeholder="Hier ist Platz für eure Nachricht..."></textarea>
-        </div>
-        <button class="btn-submit" onclick="submitEvent()">Daten Übermitteln</button>
     </div>
 </div>
 
-<div id="customModal">
+<div id="customModal" class="modal">
     <div class="modal-box">
         <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
-        <h2 style="font-family: 'Montserrat';">ÜBERTRAGUNG ERFOLGREICH</h2>
-        <p style="color: var(--text-dim); font-size: 0.9rem;">Vielen Dank für die Einladung. Wir prüfen die Details und melden uns zeitnah via Discord bei euch.</p>
-        <button class="btn-submit" onclick="location.reload()" style="margin-top: 20px;">Schließen</button>
+        <h2>Übertragung erfolgreich</h2>
+        <p style="color: var(--text-dim); margin: 15px 0;">Vielen Dank! Die Einladung wurde im System hinterlegt. Wir melden uns zeitnah.</p>
+        <button class="btn" onclick="location.reload()">Schließen</button>
     </div>
 </div>
 
 <footer>
-    D&T Logistik Management | <span style="cursor:pointer;" onclick="adminLogin()">System Terminal</span>
+    <p>&copy; 2026 D&T Transporte | <span style="cursor:pointer;" onclick="adminLogin()">System Terminal</span></p>
 </footer>
 
 <script>
+    // Supabase Konfiguration (Deine Daten übernommen)
     const supabaseUrl = 'https://dihdeuphymaxgxthnjxq.supabase.co';
     const supabaseKey = 'sb_publishable_DOAE2-PtSAC0J2iqFOvfyg_AihL7t74';
     const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
     let isAdmin = sessionStorage.getItem('dt_admin_auth') === 'true';
 
+    // Events laden
     async function fetchEvents() {
-        const { data, error } = await _supabase.from('dt-event-portal').select('*').order('id', { ascending: false });
-        if (error) return;
+        const { data, error } = await _supabase
+            .from('dt-event-portal')
+            .select('*')
+            .order('id', { ascending: false });
+
+        if (error) {
+            console.error("Fehler beim Laden:", error);
+            return;
+        }
 
         const container = document.getElementById('eventList');
         container.innerHTML = '';
 
+        if (data.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-dim);">Aktuell sind keine geplanten Events eingetragen.</p>';
+            return;
+        }
+
         data.forEach(item => {
+            // Wenn kein Admin, zeige nur bestätigte Events
             if (!isAdmin && !item.confirmed) return;
             
             const card = document.createElement('div');
-            card.className = `card ${item.confirmed ? 'confirmed' : 'pending'}`;
+            card.className = `card ${item.confirmed ? '' : 'pending'}`;
+            card.style.opacity = item.confirmed ? '1' : '0.6';
             
             card.innerHTML = `
                 <span class="status-tag ${item.confirmed ? 'status-verified' : 'status-review'}">
-                    <i class="fas ${item.confirmed ? 'fa-check' : 'fa-clock'}"></i> 
-                    ${item.confirmed ? 'Bestätigte Operation' : 'Prüfung läuft'}
+                    <i class="fas ${item.confirmed ? 'fa-check-circle' : 'fa-clock'}"></i> 
+                    ${item.confirmed ? 'Bestätigt' : 'In Prüfung'}
                 </span>
                 <h3>${item.vtc_name}</h3>
                 <div class="event-info">
                     <p><i class="fas fa-calendar-day"></i> ${item.event_date}</p>
-                    <p style="font-size: 0.8rem; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.03); padding-top: 10px;">
-                        ${item.message || 'Keine weitere Beschreibung.'}
+                    <p style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
+                        ${item.message || 'Keine weiteren Infos hinterlegt.'}
                     </p>
                 </div>
-                <a href="${item.tmp_link}" target="_blank" class="btn-manifest">Manifest öffnen</a>
+                <a href="${item.tmp_link}" target="_blank" class="btn btn-outline" style="padding: 10px 20px; font-size: 0.75rem;">Manifest öffnen</a>
             `;
 
+            // Admin Steuerung anzeigen
             if (isAdmin) {
                 const ctrls = document.createElement('div');
                 ctrls.className = 'admin-controls';
+                
                 if (!item.confirmed) {
-                    const b1 = document.createElement('button'); b1.className='admin-btn'; b1.innerText='Freigeben'; b1.onclick=()=>update(item.id, true);
+                    const b1 = document.createElement('button');
+                    b1.className='admin-btn'; b1.innerText='Freigeben';
+                    b1.onclick=()=>updateStatus(item.id, true);
                     ctrls.appendChild(b1);
                 }
-                const b2 = document.createElement('button'); b2.className='admin-btn'; b2.innerText='Löschen'; b2.onclick=()=>remove(item.id);
+                
+                const b2 = document.createElement('button');
+                b2.className='admin-btn'; b2.innerText='Löschen';
+                b2.style.color = '#ff4444';
+                b2.onclick=()=>deleteEvent(item.id);
                 ctrls.appendChild(b2);
+                
                 card.appendChild(ctrls);
             }
             container.appendChild(card);
         });
     }
 
+    // Event einreichen
     async function submitEvent() {
         const n = document.getElementById('vName').value;
         const d = document.getElementById('vDate').value;
         const l = document.getElementById('vLink').value;
         const m = document.getElementById('vMsg').value;
 
-        if(!n || !d || !l) return alert("Bitte fülle alle markierten Felder aus.");
+        if(!n || !d || !l) {
+            alert("Bitte Name, Datum und Link ausfüllen.");
+            return;
+        }
 
-        const { error } = await _supabase.from('dt-event-portal').insert([{ vtc_name: n, event_date: d, tmp_link: l, message: m, confirmed: false }]);
+        const { error } = await _supabase.from('dt-event-portal').insert([
+            { vtc_name: n, event_date: d, tmp_link: l, message: m, confirmed: false }
+        ]);
 
         if (!error) {
             document.getElementById('customModal').classList.add('active');
+        } else {
+            alert("Fehler beim Senden: " + error.message);
         }
     }
 
+    // Admin Login (Dein Code)
     window.adminLogin = function() {
         if (prompt("Zutrittscode erforderlich:") === "dic2026") {
             isAdmin = true;
@@ -358,9 +190,20 @@
         }
     };
 
-    async function update(id, s) { await _supabase.from('dt-event-portal').update({ confirmed: s }).eq('id', id); fetchEvents(); }
-    async function remove(id) { if(confirm("Eintrag permanent aus der Datenbank löschen?")) { await _supabase.from('dt-event-portal').delete().eq('id', id); fetchEvents(); } }
+    // Admin Funktionen
+    async function updateStatus(id, status) {
+        await _supabase.from('dt-event-portal').update({ confirmed: status }).eq('id', id);
+        fetchEvents();
+    }
 
+    async function deleteEvent(id) {
+        if(confirm("Event wirklich unwiderruflich löschen?")) {
+            await _supabase.from('dt-event-portal').delete().eq('id', id);
+            fetchEvents();
+        }
+    }
+
+    // Initiales Laden
     fetchEvents();
 </script>
 
