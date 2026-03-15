@@ -3,233 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D&T Transporte | Unser Codex</title>
+    <title>D&T | Unser Regelwerk</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #0062ff;
-            --primary-dark: #0046b3;
-            --dark: #0a0a0b;
-            --surface: #161618;
-            --text: #ececec;
-            --text-dim: #a0a0a0;
-            --white: #ffffff;
-            --border: rgba(255, 255, 255, 0.05);
-        }
-
-        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            position: sticky;
-            top: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 8%;
-            background: var(--surface);
-            z-index: 1000;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 1.4rem;
-            color: var(--white);
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
-        .logo span { color: var(--primary); }
-
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.85rem;
-            margin-left: 25px;
-            transition: 0.2s;
-            text-transform: uppercase;
-        }
-        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
-
-        /* --- HEADER --- */
-        .header-section {
-            padding: 80px 8% 40px;
-            background: radial-gradient(circle at top right, #1a1a1d, var(--dark));
-            text-align: left;
-        }
-
-        .header-section span {
-            color: var(--primary);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-        }
-
-        .header-section h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin: 10px 0 20px;
-            color: var(--white);
-            text-transform: uppercase;
-        }
-
-        .header-section p {
-            max-width: 700px;
-            color: var(--text-dim);
-            font-size: 1.1rem;
-        }
-
-        /* --- CONTENT --- */
-        .container { padding: 40px 8% 100px; }
-
-        .rule-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 40px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            transition: 0.3s;
-        }
-
-        .rule-card:hover { border-color: rgba(0, 98, 255, 0.3); }
-
-        .rule-card h2 {
-            font-family: 'Montserrat';
-            font-size: 1.5rem;
-            color: var(--white);
-            margin-top: 0;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .rule-card h2 i { color: var(--primary); font-size: 1.2rem; }
-
-        .rule-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .rule-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            display: flex;
-            gap: 15px;
-            color: var(--text-dim);
-        }
-
-        .rule-list li:last-child { border-bottom: none; }
-
-        .rule-list li i { color: var(--primary); margin-top: 5px; font-size: 0.9rem; }
-
-        .rule-list b { color: var(--white); font-weight: 600; }
-
-        /* --- CTA FOOTER --- */
-        .cta-box {
-            text-align: center;
-            padding: 60px;
-            background: linear-gradient(rgba(0, 98, 255, 0.05), transparent);
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .btn-join {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 15px 40px;
-            text-decoration: none;
-            font-family: 'Montserrat';
-            font-weight: 900;
-            text-transform: uppercase;
-            border-radius: 4px;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
-
-        .btn-join:hover { background: var(--primary-dark); transform: translateY(-2px); }
-
-        footer { text-align: center; padding: 60px 8%; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid var(--border); }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .rule-card { padding: 25px; }
-        }
-    </style>
 </head>
 <body>
 
 <nav>
     <a href="index.html" class="logo">D&T <span>TRANSPORTE</span></a>
     <div class="nav-links">
-        <a href="index.html">Home</a>
+        <a href="index.html">Start</a>
         <a href="bewerbung.html">Bewerben</a>
+        <a href="regeln.html" class="active">Regeln</a>
         <a href="event.html">Events</a>
-        <a href="regeln.html" class="active">Codex</a>
     </div>
 </nav>
 
-<header class="header-section">
-    <span>Miteinander statt Nebeneinander</span>
-    <h1>Unser <span style="color: var(--primary);">Codex</span></h1>
-    <p>Regeln sind bei uns keine starren Gesetze, sondern das Fundament für eine entspannte Zeit auf der Straße. Wir setzen auf Respekt und gemeinsamen Fahrspaß.</p>
+<header class="hero">
+    <span>Der D&T Codex</span>
+    <h1>Fairness auf <br><span>der Strasse.</span></h1>
+    <p>Regeln sind bei uns keine Belastung, sondern die Basis für ein entspanntes Miteinander. Wir legen Wert auf ein gutes Betriebsklima.</p>
 </header>
 
-<div class="container">
-    
-    <div class="rule-card">
-        <h2><i class="fas fa-heart"></i> Das Miteinander</h2>
+<div class="container" style="max-width: 1000px; margin: 0 auto;">
+    <div class="card">
+        <h2>1. Das Miteinander</h2>
         <ul class="rule-list">
-            <li><i class="fas fa-check"></i> <b>Respekt ist alles:</b> Wir gehen freundlich und offen miteinander um. Beleidigungen haben in unserem Fahrerhaus keinen Platz.</li>
-            <li><i class="fas fa-check"></i> <b>Teamgeist:</b> Wir unterstützen uns gegenseitig – egal ob bei Technikfragen oder auf der Route.</li>
-            <li><i class="fas fa-check"></i> <b>Repräsentation:</b> Wenn du mit unserem Namen fährst, zeigst du der Community, wie cool D&T Transporte ist.</li>
+            <li><i class="fas fa-check"></i> Ein <b>freundlicher Umgangston</b> ist unser höchstes Gut. Wir behandeln jeden so, wie wir selbst behandelt werden möchten.</li>
+            <li><i class="fas fa-check"></i> Probleme lösen wir <b>intern</b>. Ein klärendes Gespräch auf dem Discord wirkt Wunder.</li>
+            <li><i class="fas fa-check"></i> Wir repräsentieren die Spedition. Verhalte dich deshalb stets <b>höflich und professionell</b>.</li>
         </ul>
     </div>
 
-    <div class="rule-card">
-        <h2><i class="fas fa-truck"></i> Auf der Straße</h2>
+    <div class="card">
+        <h2>2. Auf Tour</h2>
         <ul class="rule-list">
-            <li><i class="fas fa-check"></i> <b>Fairplay:</b> Die Regeln von TruckersMP sind unsere Basis. Wir fahren sicher und achten auf andere Verkehrsteilnehmer.</li>
-            <li><i class="fas fa-check"></i> <b>Kein Zeitdruck:</b> Realismus ist uns wichtig, aber wir rasen nicht. Genieße die Fahrt und die Landschaft.</li>
-            <li><i class="fas fa-check"></i> <b>Konvoi-Spirit:</b> Bei gemeinsamen Fahrten halten wir zusammen und hören auf die Konvoi-Leitung, damit alle sicher ankommen.</li>
+            <li><i class="fas fa-check"></i> Die offiziellen <b>TruckersMP-Regeln</b> sind unser Gesetz. Wir fahren sicher und rücksichtsvoll.</li>
+            <li><i class="fas fa-check"></i> In Konvois halten wir <b>ausreichend Abstand</b> und achten auf unsere Kollegen.</li>
+            <li><i class="fas fa-check"></i> Wir wollen Realismus. <b>Rücksichtsloses Rasen</b> passt nicht zu unserer Philosophie.</li>
         </ul>
     </div>
 
-    <div class="rule-card">
-        <h2><i class="fas fa-star"></i> Aktivität</h2>
+    <div class="card">
+        <h2>3. Firmen-Identität</h2>
         <ul class="rule-list">
-            <li><i class="fas fa-check"></i> <b>Reallife geht vor:</b> Arbeit, Schule oder Familie sind wichtiger als Kilometer. Sag uns einfach kurz Bescheid, wenn du mal länger Pause machst.</li>
-            <li><i class="fas fa-check"></i> <b>Alter:</b> Wir nehmen Fahrer ab 16 Jahren auf, die Lust auf eine reife und lustige Gemeinschaft haben.</li>
-            <li><i class="fas fa-check"></i> <b>Look:</b> In offiziellen Konvois tragen wir stolz unsere Firmenlackierung.</li>
+            <li><i class="fas fa-check"></i> Die <b>D&T Lackierung</b> ist bei offiziellen Events Ehrensache.</li>
+            <li><i class="fas fa-check"></i> Reallife geht immer vor. Wer länger weg ist, gibt einfach kurz im Discord Bescheid.</li>
         </ul>
     </div>
-
-    <div class="cta-box">
-        <h3>Klingt fair?</h3>
-        <p>Wenn du dich mit unseren Werten identifizieren kannst, freuen wir uns auf dich!</p>
-        <a href="bewerbung.html" class="btn-join">Werde Teil des Teams</a>
-    </div>
-
 </div>
 
-<footer>
-    &copy; 2026 D&T Transporte • Gemeinschaft. Leidenschaft. Logistik.
-</footer>
-
+<footer>&copy; 2026 D&T Transporte</footer>
 </body>
 </html>
